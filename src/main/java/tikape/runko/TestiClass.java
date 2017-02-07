@@ -13,7 +13,7 @@ public class TestiClass {
     private String jotain;
 
     public TestiClass(String jotain) {
-        this.jotain = jotain;
+        
     }
     
 }
