@@ -19,7 +19,7 @@ public class Main {
             HashMap map = new HashMap<>();
             map.put("viesti", "tervehdys");
 
-            return new ModelAndView(map, "index");
+            return new ModelAndView(map, "index"); //test
         }, new ThymeleafTemplateEngine());
 
         get("/opiskelijat", (req, res) -> {
