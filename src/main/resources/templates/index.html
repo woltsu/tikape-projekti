@@ -3,14 +3,28 @@
 
     <head>
         <title>Alueet</title>
+        <link rel="stylesheet" href="styles.css">
         <meta charset="utf-8" />
     </head>
 
     <body>
-        <h1>Heippa vaan!</h1>
+        <div>
+        	<h1>Keskustelufoorumi</h1>
+        </div>
 
-        <p>Ja .. <span th:text="${viesti}">jotain?</span></p>
-
-        <p><a href="/alue">Tästä alueelle x.</a></p>
+        <div class="alueet">
+        	<table border="0" cellspacing="0" cellpadding="0">
+        		<tr class="otsikkorivi">
+        			<td>Alue</td>
+        			<td>Viestit</td>
+        			<td>Viimeisin viesti</td>
+        		</tr>
+        		<tr class="aluerivi" th:each="alue: ${alueet}">
+        			<td th:text="${alue.nimi"></td>
+        			<td th:text="${alue.viestienLkm"></td>
+        			<td th:text="${alue.viimeisin"></td>
+        		</tr>
+        	</table>
+        </div>
     </body>
 </html>

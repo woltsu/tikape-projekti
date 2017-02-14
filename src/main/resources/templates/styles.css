@@ -1,0 +1,17 @@
+div.alueet table {
+	border-style: none;
+	width: 500px;
+}
+
+div.alueet table tr:nth-child(even){
+	background-color: #dddddd;
+}
+
+div.alueet table tr.aluerivi:hover:not(.active) {
+	background-color: #555;
+	color: white;
+	border-collapse: collapse;
+}
+
+div.alueet {
+}
