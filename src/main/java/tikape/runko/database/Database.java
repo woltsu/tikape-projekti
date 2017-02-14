@@ -50,7 +50,7 @@ public class Database {
                 + ");");
         lista.add("CREATE TABLE Alue\n"
                 + "(\n"
-                + "	tunnus INTEGER PRIMARY KEY,\n"
+                + "	id INTEGER PRIMARY KEY,\n"
                 + "	kuvaus VARCHAR(200),\n"
                 + "	nimi VARCHAR(50) NOT NULL\n"
                 + ");");
@@ -66,10 +66,14 @@ public class Database {
 //        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Platon');");
 //        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Aristoteles');");
 //        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Homeros');");
-        lista.add("INSERT INTO Alue (tunnus, kuvaus, nimi) VALUES (1, 'ohi aiheesta', 'offtopic')");
-        lista.add("INSERT INTO Alue (tunnus, kuvaus, nimi) VALUES (2, 'pelaamista', 'pelit')");
-        lista.add("INSERT INTO Alue (tunnus, kuvaus, nimi) VALUES (3, 'pingviini', 'linux')");
-        lista.add("INSERT INTO Alue (tunnus, kuvaus, nimi) VALUES (4, 'stallman', 'gnu')");
+        lista.add("INSERT INTO Alue (id, kuvaus, nimi) VALUES (1, 'ohi aiheesta', 'offtopic')");
+        lista.add("INSERT INTO Alue (id, kuvaus, nimi) VALUES (2, 'pelaamista', 'pelit')");
+        lista.add("INSERT INTO Alue (id, kuvaus, nimi) VALUES (3, 'pingviini', 'linux')");
+        lista.add("INSERT INTO Alue (id, kuvaus, nimi) VALUES (4, 'stallman', 'gnu')");
+        
+        lista.add("INSERT INTO Viestiketju (tunnus, alue, otsikko, aikaleima) VALUES (1, 3, 'Osaavatko pingviinit lentää? Entä onko niillä polvia?', null)");
+//        lista.add("INSERT INTO Vastaus VALUES(1, 'tommi', 1, null, 'joo ja ei')");
+//        lista.add("INSERT INTO Vastaus VALUES(2, 'pekka', 1, null, 'ei ja joo')");
 
         return lista;
     }

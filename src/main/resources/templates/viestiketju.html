@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title th:text="${otsikko}">Otsikko</title>
+        <title th:text="${viestiketju.otsikko}">Otsikko</title>
         <link rel="stylesheet" href="styles.css" />
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
         <meta charset="utf-8" />
@@ -10,22 +10,29 @@
 
     <body>
         <div class="well">
-            <h1><span th:text="${otsikko}">viestiketjun nimi</span></h1>
+            <h1><span th:text="${viestiketju.otsikko}">viestiketjun nimi</span></h1>
         </div>
 
-        <div class="well" id="viestit">
-            <div class="well"><p>ei ole</p></div>
-            <div class="well"><p>onpas</p></div>
+        <div class="well" th:each="vastaus : ${vastaukset}">
+            <span>
+                <b>
+                    <span th:text="${vastaus.lahettaja}">nimimerkki</span>
+                </b>
+            </span>
+            <br/>
+            <span th:text="${vastaus.sisalto}">sisalto</span>
+            <br/>
+            <span th:text="${vastaus.aikaleima}">aikaleima</span>
         </div>
 
         <div class="well" id="vastaus">
-            <form>
+            <form method="POST" action="/viestiketju" >
                 <div>
                     <input type="text" name="nimi" placeholder="Nimimerkki" required="" oninvalid="this.setCustomValidity('Lisää nimimerkki')"
                            oninput="setCustomValidity('')"/>
                 </div>
                 <div>
-                    <textarea style="resize: none" name="Text1" cols="40" rows="5" placeholder="Viesti" required="" oninvalid="this.setCustomValidity('Lisää viesti')"
+                    <textarea style="resize: none" name="viesti" cols="40" rows="5" placeholder="Viesti" required="" oninvalid="this.setCustomValidity('Lisää viesti')"
                               oninput="setCustomValidity('')"></textarea>
                 </div>
                 <div>

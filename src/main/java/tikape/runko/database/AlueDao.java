@@ -85,7 +85,7 @@ public class AlueDao implements Dao<Alue, Integer> {
     @Override
     public List<Alue> findAll() throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viestiketju");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue");
 
         ResultSet rs = stmt.executeQuery();
         List<Alue> alueet = new ArrayList<>();

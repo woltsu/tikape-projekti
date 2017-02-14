@@ -1,5 +1,6 @@
 package tikape.runko;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,8 +9,10 @@ import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.runko.database.AlueDao;
 import tikape.runko.database.Database;
+import tikape.runko.database.VastausDao;
 import tikape.runko.database.ViestiketjuDao;
 import tikape.runko.domain.Alue;
+import tikape.runko.domain.Vastaus;
 import tikape.runko.domain.Viestiketju;
 
 public class Main {
@@ -20,6 +23,11 @@ public class Main {
 
         ViestiketjuDao viestiketjuDao = new ViestiketjuDao(database);
         AlueDao alueDao = new AlueDao(database);
+        VastausDao vastausDao = new VastausDao(database);
+        
+        //testailua
+        Viestiketju viestiketju = viestiketjuDao.findOne(1);
+        List<Vastaus> vastaukset = vastausDao.findAll();
 
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -56,9 +64,18 @@ public class Main {
         get("/viestiketju", (req, res) -> {
             HashMap data = new HashMap<>();
             
-            data.put("otsikko", "autot on kivoja");
+            data.put("viestiketju", viestiketju);
+            data.put("vastaukset", vastaukset);
             
             return new ModelAndView(data, "viestiketju");
         }, new ThymeleafTemplateEngine());
+        
+        post("/viestiketju", (req, res) -> {
+            String nimi = req.queryParams("nimi");
+            String viesti = req.queryParams("viesti");
+            vastaukset.add(new Vastaus(1, 1, new Timestamp(System.currentTimeMillis()), viesti, nimi));
+            res.redirect("/viestiketju");
+            return "";
+        });
     }
 }
