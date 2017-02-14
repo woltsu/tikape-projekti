@@ -2,14 +2,37 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title th:text="${viestiketju.nimi}">Otsikko</title>
+        <title th:text="${otsikko}">Otsikko</title>
+        <link rel="stylesheet" href="styles.css" />
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
         <meta charset="utf-8" />
     </head>
 
     <body>
-        <h1>Olet saapunut viestiketjuun "<span th:text="${viestiketju.nimi}">viestiketjun nimi</span>"</h1>
+        <div class="well">
+            <h1><span th:text="${otsikko}">viestiketjun nimi</span></h1>
+        </div>
 
-        <p>vastaus: öö</p>
-        <p>vastaus: åå</p>
+        <div class="well" id="viestit">
+            <div class="well"><p>ei ole</p></div>
+            <div class="well"><p>onpas</p></div>
+        </div>
+
+        <div class="well" id="vastaus">
+            <form>
+                <div>
+                    <input type="text" name="nimi" placeholder="Nimimerkki" required="" oninvalid="this.setCustomValidity('Lisää nimimerkki')"
+                           oninput="setCustomValidity('')"/>
+                </div>
+                <div>
+                    <textarea style="resize: none" name="Text1" cols="40" rows="5" placeholder="Viesti" required="" oninvalid="this.setCustomValidity('Lisää viesti')"
+                              oninput="setCustomValidity('')"></textarea>
+                </div>
+                <div>
+                    <input type="submit" value="Lähetä viesti"/>
+                </div>
+            </form>
+        </div>
+
     </body>
 </html>

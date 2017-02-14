@@ -41,7 +41,7 @@ public class Main {
 
             return new ModelAndView(map, "viestiketju");
         }, new ThymeleafTemplateEngine());
-        
+
         get("/index.html", (req, res) -> {
             HashMap map = new HashMap<>();
             List<Alue> alueet = new ArrayList<>();
@@ -51,6 +51,14 @@ public class Main {
             map.put("alueet", alueet);
 
             return new ModelAndView(map, "index");
+        }, new ThymeleafTemplateEngine());
+
+        get("/viestiketju", (req, res) -> {
+            HashMap data = new HashMap<>();
+            
+            data.put("otsikko", "autot on kivoja");
+            
+            return new ModelAndView(data, "viestiketju");
         }, new ThymeleafTemplateEngine());
     }
 }

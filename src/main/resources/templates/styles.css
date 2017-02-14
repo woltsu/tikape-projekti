@@ -15,3 +15,7 @@ div.alueet table tr.aluerivi:hover:not(.active) {
 
 div.alueet {
 }
+
+.test {
+    background-color: coral;
+}
