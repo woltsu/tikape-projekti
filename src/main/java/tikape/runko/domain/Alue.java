@@ -10,10 +10,12 @@ public class Alue {
     private int viestienLkm;
     private Timestamp viimeisinTimestamp;
 
-    public Alue(int id, String nimi, String kuvaus) {
+    public Alue(int id, String nimi, String kuvaus, int viestienLkm, Timestamp viimeisinTimestamp) {
         this.id = id;
         this.nimi = nimi;
         this.kuvaus = kuvaus;
+        this.viestienLkm = viestienLkm;
+        this.viimeisinTimestamp = viimeisinTimestamp;
         //this.viestienLkm = AlueDao().getLkm();
     }
 
