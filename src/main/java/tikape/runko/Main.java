@@ -1,8 +1,11 @@
 package tikape.runko;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.context.IWebContext;
 import spark.ModelAndView;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
@@ -45,9 +48,9 @@ public class Main {
         get("/index.html", (req, res) -> {
             HashMap map = new HashMap<>();
             List<Alue> alueet = new ArrayList<>();
-            alueet.add(new Alue(0, "Koodaus", "Koodaamista"));
-            alueet.add(new Alue(1, "Pelit", "Pelaamista"));
-            alueet.add(new Alue(2, "Linux", "Pingviini"));
+            alueet.add(new Alue(0, "Koodaus", "Koodaamista", 32, new Timestamp(System.currentTimeMillis())));
+            alueet.add(new Alue(1, "Pelit", "Pelaamista", 22, new Timestamp(System.currentTimeMillis())));
+            alueet.add(new Alue(2, "Linux", "Pingviini", 12, new Timestamp(System.currentTimeMillis())));
             map.put("alueet", alueet);
 
             return new ModelAndView(map, "index");

@@ -1,30 +1,60 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-    <head>
-        <title>Alueet</title>
-        <link rel="stylesheet" href="styles.css" />
-        <meta charset="utf-8" />
-    </head>
+<head>
+    <title>Alueet</title>
+    <meta charset="utf-8" />
+    <!-- <link th:href="@{~styles.css}" rel="stylesheet" type="text/css" href="styles.css" /> -->
+    <style type="text/css">
+        div.alueet table {
+            border-style: none;
+             width: 500px;
+        }
 
-    <body>
-        <div>
-        	<h1>Keskustelufoorumi</h1>
-        </div>
+        div.alueet table tr:nth-child(even){
+        background-color: #dddddd;
+        }
 
-        <div class="alueet">
-        	<table border="0" cellspacing="0" cellpadding="0">
-        		<tr class="otsikkorivi">
-        			<td>Alue</td>
-        			<td>Viestit</td>
-        			<td>Viimeisin viesti</td>
-        		</tr>
-        		<tr class="aluerivi" th:each="alue : ${alueet}">
-        			<td th:text="${alue.nimi}">nimi</td>
-        			<td th:text="${alue.viestienLkm}">maara</td>
-        			<td th:text="${alue.viimeisin}">aika</td>
-        		</tr>
-        	</table>
-        </div>
-    </body>
+        a {
+            display: block;
+            height: 100%;
+            width: 100%;
+            text-decoration: none;
+            color: black;
+        }
+
+        div.alueet table tr.aluerivi:hover:not(.active) {
+            background-color: #555;
+            color: white;
+            border-collapse: collapse;
+        }
+
+        a:hover:not(.active) {
+            background-color: #555;
+            color: white;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+    	<h1>Keskustelufoorumi</h1>
+    </div>
+
+    <div class="alueet">
+    	<table border="0" cellspacing="0" cellpadding="0">
+    		<tr class="otsikkorivi">
+    			<td>Alue</td>
+    			<td>Viestit</td>
+    			<td>Viimeisin viesti</td>
+    		</tr>
+    		<tr class="aluerivi" th:each="alue : ${alueet}">
+    			<td><a th:href="@{~/{nimi}(nimi=${alue.nimi})}" th:text="${alue.nimi}">nimi</a></td>
+    			<td><a th:href="@{~/{nimi}(nimi=${alue.nimi})}" th:text="${alue.viestienLkm}">maara</a></td>
+    			<td><a th:href="@{~/{nimi}(nimi=${alue.nimi})}" th:text="${alue.viimeisin}">aika</a></td>
+    		</tr>
+    	</table>
+    </div>
+</body>
 </html>
