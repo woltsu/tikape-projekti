@@ -1,11 +1,14 @@
 package tikape.runko.domain;
 
+import java.sql.Timestamp;
+
 public class Alue {
 
     private int id;
     private String nimi;
     private String kuvaus;
     private int viestienLkm;
+    private Timestamp viimeisinTimestamp;
 
     public Alue(int id, String nimi, String kuvaus) {
         this.id = id;
@@ -41,5 +44,17 @@ public class Alue {
     public int lisaaViesti() {
         viestienLkm++;
         return viestienLkm;
+    }
+
+    public Timestamp getViimeisinTimestamp() {
+        return viimeisinTimestamp;
+    }
+
+    public void setViimeisinTimestamp(Timestamp viimeisinTimestamp) {
+        this.viimeisinTimestamp = viimeisinTimestamp;
+    }
+    
+    public String getViimeisin() {
+        return viimeisinTimestamp.toString();
     }
 }
