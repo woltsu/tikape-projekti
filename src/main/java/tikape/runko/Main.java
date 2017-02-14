@@ -6,14 +6,16 @@ import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.runko.database.Database;
 import tikape.runko.database.OpiskelijaDao;
+import tikape.runko.database.ViestiketjuDao;
+import tikape.runko.domain.Viestiketju;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Database database = new Database("jdbc:sqlite:opiskelijat.db");
+        Database database = new Database("jdbc:sqlite:foorumi.db");
         database.init();
 
-        OpiskelijaDao opiskelijaDao = new OpiskelijaDao(database);
+        ViestiketjuDao viestiketjuDao = new ViestiketjuDao(database);
 
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -24,7 +26,7 @@ public class Main {
 
         get("/alue", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("viestiketjut", opiskelijaDao.findAll());
+            map.put("viestiketjut", viestiketjuDao.findAll());
 
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
