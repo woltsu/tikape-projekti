@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import tikape.runko.domain.Vastaus;
 
 public class VastausDao implements Dao<Vastaus, Integer> {
 
@@ -19,12 +20,14 @@ public class VastausDao implements Dao<Vastaus, Integer> {
     @Override
     public Vastaus create(Vastaus t) throws SQLException {
         try (Connection connection = database.getConnection()) {
-            String query = "INSERT INTO Book (isbn, title, status) VALUES (?, ?, ?)";
+            String query = "INSERT INTO Vastaus (, title, status) VALUES (?, ?, ?)";
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setInt(1, key);
+            ps.setInt(1, t.getId());
             ps.execute();
             ps.close();
         }
+        
+        return findOne(t.getId());
     }
 
     @Override
@@ -39,7 +42,8 @@ public class VastausDao implements Dao<Vastaus, Integer> {
                 int viestiketjuTunnus = rs.getInt("viestiketju");
                 Timestamp timestamp = rs.getTimestamp("aikaleima");
                 String sisalto = rs.getString("sisältö");
-                vastaus = new Vastaus();
+                String nimimerkki = rs.getString("nimimerkki");
+                vastaus = new Vastaus(tunnus, viestiketjuTunnus, timestamp, sisalto, nimimerkki);
             }
 
             rs.close();
@@ -59,7 +63,8 @@ public class VastausDao implements Dao<Vastaus, Integer> {
                 int viestiketjuTunnus = rs.getInt("viestiketju");
                 Timestamp timestamp = rs.getTimestamp("aikaleima");
                 String sisalto = rs.getString("sisältö");
-                vastaukset.add(new Vastaus());
+                String nimimerkki = rs.getString("nimimerkki");
+                vastaukset.add(new Vastaus(tunnus, viestiketjuTunnus, timestamp, sisalto, nimimerkki));
             }
             rs.close();
         }
@@ -72,9 +77,9 @@ public class VastausDao implements Dao<Vastaus, Integer> {
         try (Connection connection = database.getConnection()) {
             String query = "UPDATE Vastaus SET viestiketju = ?, aikaleima = ?, sisältö = ? WHERE tunnus = ?";
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setInt(1, t.getViestiketju());
-            ps.setInt(2, t.getAikaleima());
-            ps.setInt(3, t.getSisalto());
+            ps.setInt(1, t.getKetjuId());
+            ps.setTimestamp(2, t.getAikaleima());
+            ps.setString(3, t.getSisalto());
             ps.setInt(4, key);
             ps.executeUpdate();
             ps.close();
