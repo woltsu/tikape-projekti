@@ -39,10 +39,33 @@ public class Database {
         ArrayList<String> lista = new ArrayList<>();
 
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
-        lista.add("CREATE TABLE Opiskelija (id integer PRIMARY KEY, nimi varchar(255));");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Platon');");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Aristoteles');");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Homeros');");
+        lista.add("CREATE TABLE Vastaus\n"
+                + "(\n"
+                + "	tunnus INTEGER PRIMARY KEY,\n"
+                + "	nimimerkki VARCHAR(30) NOT NULL,\n"
+                + "	viestiketju INTEGER NOT NULL,\n"
+                + "	aikaleima TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n"
+                + "	sisältö VARCHAR(1000) NOT NULL,\n"
+                + "	FOREIGN KEY(viestiketju) REFERENCES Viestiketju(tunnus)\n"
+                + ");");
+        lista.add("CREATE TABLE Alue\n"
+                + "(\n"
+                + "	tunnus INTEGER PRIMARY KEY,\n"
+                + "	kuvaus VARCHAR(200),\n"
+                + "	nimi VARCHAR(50) NOT NULL\n"
+                + ");");
+        lista.add("CREATE TABLE Viestiketju\n"
+                + "(\n"
+                + "	tunnus INTEGER PRIMARY KEY,\n"
+                + "	alue INTEGER NOT NULL,\n"
+                + "	otsikko VARCHAR(30) NOT NULL,\n"
+                + "	aikaleima TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n"
+                + "	FOREIGN KEY(alue) REFERENCES Alue(tunnus)\n"
+                + ");");
+        
+//        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Platon');");
+//        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Aristoteles');");
+//        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Homeros');");
 
         return lista;
     }
