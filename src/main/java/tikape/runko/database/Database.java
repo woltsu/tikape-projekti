@@ -66,6 +66,10 @@ public class Database {
 //        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Platon');");
 //        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Aristoteles');");
 //        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Homeros');");
+        lista.add("INSERT INTO Alue (tunnus, kuvaus, nimi) VALUES (1, 'ohi aiheesta', 'offtopic')");
+        lista.add("INSERT INTO Alue (tunnus, kuvaus, nimi) VALUES (2, 'pelaamista', 'pelit')");
+        lista.add("INSERT INTO Alue (tunnus, kuvaus, nimi) VALUES (3, 'pingviini', 'linux')");
+        lista.add("INSERT INTO Alue (tunnus, kuvaus, nimi) VALUES (4, 'stallman', 'gnu')");
 
         return lista;
     }
