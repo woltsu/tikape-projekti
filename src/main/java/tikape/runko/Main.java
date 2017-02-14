@@ -62,9 +62,7 @@ public class Main {
 
             return new ModelAndView(map, "viestiketju");
         }, new ThymeleafTemplateEngine());
-<<<<<<< HEAD
 
-=======
         
         //web-palvelin saa pyynnön tietylle alueelle ja palauttaa sen perusteella muokatun web-sivun
         get("/alue/:alue", (req, res) -> {
@@ -75,7 +73,6 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         //web-palvelin saa pyynnon index.html ja palauttaa muokatun web-sivun
->>>>>>> origin/master
         get("/index.html", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("alueet", alueet.values());
