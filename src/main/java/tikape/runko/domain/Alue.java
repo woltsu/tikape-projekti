@@ -18,6 +18,13 @@ public class Alue {
         this.viimeisinTimestamp = viimeisinTimestamp;
         //this.viestienLkm = AlueDao().getLkm();
     }
+    
+        public Alue(int id, String nimi, String kuvaus) {
+        this.id = id;
+        this.nimi = nimi;
+        this.kuvaus = kuvaus;
+        //this.viestienLkm = AlueDao().getLkm();
+    }
 
     public Integer getId() {
         return id;
