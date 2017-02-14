@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.context.IWebContext;
 import spark.ModelAndView;
@@ -18,11 +19,21 @@ import tikape.runko.domain.Viestiketju;
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        //luodaan tietokantaolio
         Database database = new Database("jdbc:sqlite:foorumi.db");
         database.init();
 
+        //luodaan tietokannan käsittelyoliot
         ViestiketjuDao viestiketjuDao = new ViestiketjuDao(database);
         AlueDao alueDao = new AlueDao(database);
+
+        //luodaan hashmap alueista
+        Map<String, Alue> alueet = new HashMap<>();
+        
+        //alueita testaamista varten
+        alueet.put("Koodaus", new Alue(0, "Koodaus", "Koodaamista", 32, new Timestamp(System.currentTimeMillis())));
+        alueet.put("Pelit", new Alue(1, "Pelit", "Pelaamista", 22, new Timestamp(System.currentTimeMillis())));
+        alueet.put("Linux", new Alue(2, "Linux", "Pingviini", 12, new Timestamp(System.currentTimeMillis())));
 
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -45,13 +56,18 @@ public class Main {
             return new ModelAndView(map, "viestiketju");
         }, new ThymeleafTemplateEngine());
         
+        //web-palvelin saa pyynnön tietylle alueelle ja palauttaa sen perusteella muokatun web-sivun
+        get("/alue/:alue", (req, res) -> {
+            HashMap map = new HashMap<>();
+            map.put("viestiketjut", viestiketjuDao.findAll());
+
+            return new ModelAndView(map, "alue");
+        }, new ThymeleafTemplateEngine());
+
+        //web-palvelin saa pyynnon index.html ja palauttaa muokatun web-sivun
         get("/index.html", (req, res) -> {
             HashMap map = new HashMap<>();
-            List<Alue> alueet = new ArrayList<>();
-            alueet.add(new Alue(0, "Koodaus", "Koodaamista", 32, new Timestamp(System.currentTimeMillis())));
-            alueet.add(new Alue(1, "Pelit", "Pelaamista", 22, new Timestamp(System.currentTimeMillis())));
-            alueet.add(new Alue(2, "Linux", "Pingviini", 12, new Timestamp(System.currentTimeMillis())));
-            map.put("alueet", alueet);
+            map.put("alueet", alueet.values());
 
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
