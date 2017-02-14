@@ -28,13 +28,11 @@ public class Main {
         //luodaan tietokannan käsittelyoliot
         ViestiketjuDao viestiketjuDao = new ViestiketjuDao(database);
         AlueDao alueDao = new AlueDao(database);
-<<<<<<< HEAD
         VastausDao vastausDao = new VastausDao(database);
         
         //testailua
         Viestiketju viestiketju = viestiketjuDao.findOne(1);
         List<Vastaus> vastaukset = vastausDao.findAll();
-=======
 
         //luodaan hashmap alueista
         Map<String, Alue> alueet = new HashMap<>();
@@ -43,7 +41,6 @@ public class Main {
         alueet.put("Koodaus", new Alue(0, "Koodaus", "Koodaamista", 32, new Timestamp(System.currentTimeMillis())));
         alueet.put("Pelit", new Alue(1, "Pelit", "Pelaamista", 22, new Timestamp(System.currentTimeMillis())));
         alueet.put("Linux", new Alue(2, "Linux", "Pingviini", 12, new Timestamp(System.currentTimeMillis())));
->>>>>>> origin/master
 
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
