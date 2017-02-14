@@ -29,13 +29,21 @@ public class Alue {
     public void setNimi(String nimi) {
         this.nimi = nimi;
     }
-
+    
     public int getViestienLkm() {
         return viestienLkm;
     }
 
     public void setViestienLkm(int viestienLkm) {
         this.viestienLkm = viestienLkm;
+    }
+    
+    public String getKuvaus() {
+        return this.kuvaus;
+    }
+    
+    public void setKuvaus(String kuvaus) {
+        this.kuvaus = kuvaus;
     }
     
     public int lisaaViesti() {
