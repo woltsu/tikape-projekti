@@ -1,12 +1,15 @@
 package tikape.runko;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import spark.ModelAndView;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.runko.database.Database;
 import tikape.runko.database.OpiskelijaDao;
 import tikape.runko.database.ViestiketjuDao;
+import tikape.runko.domain.Alue;
 import tikape.runko.domain.Viestiketju;
 
 public class Main {
@@ -36,6 +39,17 @@ public class Main {
             map.put("viestiketju", opiskelijaDao.findOne(Integer.parseInt(req.params("id"))));
 
             return new ModelAndView(map, "viestiketju");
+        }, new ThymeleafTemplateEngine());
+        
+        get("/index.html", (req, res) -> {
+            HashMap map = new HashMap<>();
+            List<Alue> alueet = new ArrayList<>();
+            alueet.add(new Alue(0, "Koodaus", "Koodaamista"));
+            alueet.add(new Alue(1, "Pelit", "Pelaamista"));
+            alueet.add(new Alue(2, "Linux", "Pingviini"));
+            map.put("alueet", alueet);
+
+            return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
     }
 }
