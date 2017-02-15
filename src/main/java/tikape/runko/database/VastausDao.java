@@ -40,7 +40,7 @@ public class VastausDao implements Dao<Vastaus, Integer> {
             if (rs.next()) {
                 int tunnus = rs.getInt("tunnus");
                 int viestiketjuTunnus = rs.getInt("viestiketju");
-                Timestamp timestamp = rs.getTimestamp("aikaleima");
+                Timestamp timestamp = new Aikaleima(rs.getString("aikaleima"));
                 String sisalto = rs.getString("sisältö");
                 String nimimerkki = rs.getString("nimimerkki");
                 vastaus = new Vastaus(tunnus, viestiketjuTunnus, timestamp, sisalto, nimimerkki);
@@ -61,7 +61,7 @@ public class VastausDao implements Dao<Vastaus, Integer> {
             while (rs.next()) {
                 int tunnus = rs.getInt("tunnus");
                 int viestiketjuTunnus = rs.getInt("viestiketju");
-                Timestamp timestamp = rs.getTimestamp("aikaleima");
+                Timestamp timestamp = new Aikaleima(rs.getString("aikaleima"));
                 String sisalto = rs.getString("sisältö");
                 String nimimerkki = rs.getString("nimimerkki");
                 vastaukset.add(new Vastaus(tunnus, viestiketjuTunnus, timestamp, sisalto, nimimerkki));

@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import javassist.compiler.ast.Stmnt;
 import tikape.runko.domain.Viestiketju;
 
 public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
@@ -33,7 +32,7 @@ public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
         int tunnus = rs.getInt("tunnus");
         int alue = rs.getInt("alue");
         String otsikko = rs.getString("otsikko");
-        Timestamp aikaleima = rs.getTimestamp("aikaleima");
+        Timestamp aikaleima = new Aikaleima(rs.getString("aikaleima"));
 
         Viestiketju vk = new Viestiketju(tunnus, alue, otsikko, aikaleima);
 
@@ -55,15 +54,15 @@ public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
             int tunnus = rs.getInt("tunnus");
             int alue = rs.getInt("alue");
             String otsikko = rs.getString("otsikko");
-            Timestamp aikaleima = rs.getTimestamp("aikaleima");
-            
+            Timestamp aikaleima = new Aikaleima(rs.getString("aikaleima"));
+
             viestiketjut.add(new Viestiketju(tunnus, alue, otsikko, aikaleima));
         }
 
         rs.close();
         stmt.close();
         connection.close();
-        
+
         return viestiketjut;
     }
 
@@ -73,7 +72,7 @@ public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
         PreparedStatement stmt = connection.prepareStatement("DELETE FROM Viestiketju WHERE tunnus = ?");
         stmt.setObject(1, key);
         stmt.executeUpdate();
-        
+
         stmt.close();
         connection.close();
     }
@@ -82,16 +81,16 @@ public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
     public Viestiketju create(Viestiketju t) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO Viestiketju VALUES(?, ?, ?, ?)");
-        
+
         stmt.setObject(1, t.getTunnus());
         stmt.setObject(2, t.getAlue());
         stmt.setObject(3, t.getOtsikko());
         stmt.setObject(4, t.getAikaleima());
         stmt.executeUpdate();
-        
+
         stmt.close();
         connection.close();
-        
+
         return findOne(t.getTunnus());
     }
 
@@ -99,11 +98,11 @@ public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
     public void update(Integer key, Viestiketju t) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("UPDATE Viestiketju SET otsikko = ? WHERE tunnus = ?");
-        
+
         stmt.setObject(1, t.getOtsikko());
         stmt.setObject(2, key);
         stmt.executeUpdate();
-        
+
         stmt.close();
         connection.close();
     }

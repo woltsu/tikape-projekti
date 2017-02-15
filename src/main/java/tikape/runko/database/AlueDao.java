@@ -36,7 +36,7 @@ public class AlueDao implements Dao<Alue, Integer> {
     @Override
     public Alue findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue WHERE tunnus = ?");
         stmt.setObject(1, key);
 
         ResultSet rs = stmt.executeQuery();
@@ -45,7 +45,7 @@ public class AlueDao implements Dao<Alue, Integer> {
             return null;
         }
 
-        int id = rs.getInt("id");
+        int id = rs.getInt("tunnus");
         String nimi = rs.getString("nimi");
         String kuvaus = rs.getString("kuvaus");
 
@@ -61,7 +61,7 @@ public class AlueDao implements Dao<Alue, Integer> {
     @Override
     public void update(Integer key, Alue t) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("UPDATE Alue SET kuvaus = ? WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("UPDATE Alue SET kuvaus = ? WHERE tunnus = ?");
 
         stmt.setObject(1, t.getKuvaus());
         stmt.setObject(2, key);
@@ -74,7 +74,7 @@ public class AlueDao implements Dao<Alue, Integer> {
     @Override
     public void delete(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("DELETE FROM Alue WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("DELETE FROM Alue WHERE tunnus = ?");
         stmt.setObject(1, key);
         stmt.executeUpdate();
 
@@ -85,7 +85,14 @@ public class AlueDao implements Dao<Alue, Integer> {
     @Override
     public List<Alue> findAll() throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue");
+        // Viimeisin viesti ei toimi! Tätä varmaan sais siistimmäks?
+        String query
+                = "SELECT Alue.id, Alue.kuvaus, Alue.nimi, Vastaus.aikaleima AS viimeisinViesti, COUNT(*) AS viestienLkm "
+                + "FROM Alue, Viestiketju, Vastaus "
+                + "WHERE Alue.id = Viestiketju.alue AND Viestiketju.tunnus = Vastaus.viestiketju "
+                + "GROUP BY Viestiketju.alue ORDER BY Alue.nimi";
+
+        PreparedStatement stmt = connection.prepareStatement(query);
 
         ResultSet rs = stmt.executeQuery();
         List<Alue> alueet = new ArrayList<>();
@@ -93,7 +100,9 @@ public class AlueDao implements Dao<Alue, Integer> {
             int id = rs.getInt("id");
             String nimi = rs.getString("nimi");
             String kuvaus = rs.getString("kuvaus");
-            alueet.add(new Alue(id, nimi, kuvaus));
+            Timestamp timestamp = new Aikaleima(rs.getString("viimeisinViesti"));
+            int viestienLkm = rs.getInt("viestienLkm");
+            alueet.add(new Alue(id, nimi, kuvaus, viestienLkm, timestamp));
         }
 
         rs.close();
