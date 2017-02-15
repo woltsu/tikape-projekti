@@ -49,14 +49,14 @@ public class Main {
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
 
-        get("/alue/:id", (req, res) -> {
+        get("/viestiketju/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("viestiketju", viestiketjuDao.findOne(Integer.parseInt(req.params("id"))));
-
+            map.put("viestiketju", viestiketjuDao.findOne(Integer.parseInt(req.params(":id"))));
+            map.put("vastaukset", vastausDao.findAllByViestiketju(Integer.parseInt(req.params(":id"))));
             return new ModelAndView(map, "viestiketju");
         }, new ThymeleafTemplateEngine());
 
-        //"/viestiketju":n sijaan käytetään varmaankin viestiketjun id:tä, kuten /:id tai /:alue/:id
+//        "/viestiketju":n sijaan käytetään varmaankin viestiketjun id:tä, kuten /:id tai /:alue/:id
         get("/viestiketju", (req, res) -> {
             HashMap data = new HashMap<>();
 

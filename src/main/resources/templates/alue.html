@@ -11,7 +11,7 @@
 
         <ol>
             <li th:each="viestiketju: ${viestiketjut}">
-                <a th:href="@{~/alue/{id}(id=${viestiketju.id})}" th:text="${viestiketju.otsikko}">nimi</a>
+                <a th:href="@{~/viestiketju/{id}(id=${viestiketju.id})}" th:text="${viestiketju.otsikko}">nimi</a>
             </li>
         </ol>
     </body>
