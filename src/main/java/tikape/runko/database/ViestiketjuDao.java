@@ -7,14 +7,18 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import org.sqlite.SQLite;
+import tikape.runko.domain.Vastaus;
 import tikape.runko.domain.Viestiketju;
 
 public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
 
     private Database database;
+    private VastausDao vastausDao;
 
     public ViestiketjuDao(Database database) {
         this.database = database;
+        this.vastausDao = new VastausDao(database);
     }
 
     @Override
@@ -34,7 +38,8 @@ public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
         String otsikko = rs.getString("otsikko");
         Timestamp aikaleima = new Aikaleima(rs.getString("aikaleima"));
 
-        Viestiketju vk = new Viestiketju(tunnus, alue, otsikko, aikaleima);
+        List<Vastaus> vastaukset = vastausDao.findAllByViestiketju(key);
+        Viestiketju vk = new Viestiketju(tunnus, alue, otsikko, aikaleima, vastaukset);
 
         rs.close();
         stmt.close();
@@ -55,13 +60,33 @@ public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
             int alue = rs.getInt("alue");
             String otsikko = rs.getString("otsikko");
             Timestamp aikaleima = new Aikaleima(rs.getString("aikaleima"));
-
-            viestiketjut.add(new Viestiketju(tunnus, alue, otsikko, aikaleima));
+            List<Vastaus> vastaukset = vastausDao.findAllByViestiketju(tunnus);
+            viestiketjut.add(new Viestiketju(tunnus, alue, otsikko, aikaleima, vastaukset));
         }
 
         rs.close();
         stmt.close();
         connection.close();
+
+        return viestiketjut;
+    }
+
+    public List<Viestiketju> findAllByAlue(int alueTunnus) throws SQLException {
+        List<Viestiketju> viestiketjut = new ArrayList<>();
+        try (Connection connection = database.getConnection()) {
+            PreparedStatement st = connection.prepareStatement("SELECT * FROM Viestiketju WHERE alue = ?");
+            st.setInt(1, alueTunnus);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int tunnus = rs.getInt("tunnus");
+                String otsikko = rs.getString("otsikko");
+                Timestamp aikaleima = new Aikaleima(rs.getString("aikaleima"));
+                List<Vastaus> vastaukset = vastausDao.findAllByViestiketju(tunnus);
+                viestiketjut.add(new Viestiketju(tunnus, alueTunnus, otsikko, aikaleima, vastaukset));
+            }
+            rs.close();
+            st.close();
+        }
 
         return viestiketjut;
     }

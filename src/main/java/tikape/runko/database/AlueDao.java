@@ -8,13 +8,16 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import tikape.runko.domain.Alue;
+import tikape.runko.domain.Viestiketju;
 
 public class AlueDao implements Dao<Alue, Integer> {
 
     private Database database;
+    private ViestiketjuDao viestiketjuDao;
 
     public AlueDao(Database database) {
         this.database = database;
+        this.viestiketjuDao = new ViestiketjuDao(database);
     }
 
     @Override
@@ -102,7 +105,8 @@ public class AlueDao implements Dao<Alue, Integer> {
             String kuvaus = rs.getString("kuvaus");
             Timestamp timestamp = new Aikaleima(rs.getString("viimeisinViesti"));
             int viestienLkm = rs.getInt("viestienLkm");
-            alueet.add(new Alue(id, nimi, kuvaus, viestienLkm, timestamp));
+            List<Viestiketju> viestiketjut = viestiketjuDao.findAllByAlue(id);
+            alueet.add(new Alue(id, nimi, kuvaus, viestienLkm, timestamp, viestiketjut));
         }
 
         rs.close();

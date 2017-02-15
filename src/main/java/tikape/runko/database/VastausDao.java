@@ -26,7 +26,7 @@ public class VastausDao implements Dao<Vastaus, Integer> {
             ps.execute();
             ps.close();
         }
-        
+
         return findOne(t.getId());
     }
 
@@ -67,6 +67,26 @@ public class VastausDao implements Dao<Vastaus, Integer> {
                 vastaukset.add(new Vastaus(tunnus, viestiketjuTunnus, timestamp, sisalto, nimimerkki));
             }
             rs.close();
+        }
+
+        return vastaukset;
+    }
+
+    public List<Vastaus> findAllByViestiketju(int viestiketjuTunnus) throws SQLException {
+        List<Vastaus> vastaukset = new ArrayList<>();
+        try (Connection connection = database.getConnection()) {
+            PreparedStatement st = connection.prepareStatement("SELECT * FROM Vastaus WHERE viestiketju = ?");
+            st.setInt(1, viestiketjuTunnus);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int viestinTunnus = rs.getInt("tunnus");
+                Timestamp timestamp = new Aikaleima(rs.getString("aikaleima"));
+                String sisalto = rs.getString("sisältö");
+                String nimimerkki = rs.getString("nimimerkki");
+                vastaukset.add(new Vastaus(viestinTunnus, viestiketjuTunnus, timestamp, sisalto, nimimerkki));
+            }
+            rs.close();
+            st.close();
         }
 
         return vastaukset;
