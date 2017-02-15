@@ -51,4 +51,23 @@ public class Viestiketju {
         this.vastaukset = vastaukset;
     }
 
+    // Debuggausta varten
+    @Override
+    public String toString() {
+        String s = "[Viestiketju]" + "\n";
+        s += "Tunnus: " + tunnus + "\n";
+        s += "Otsikko: " + otsikko + "\n";
+        s += "Alueen tunnus: " + alue + "\n";
+        s += "Aikaleima: " + aikaleima + "\n";
+        s += "Vastaukset:" + "\n";
+
+        for (Vastaus v : vastaukset) {
+            for (String rivi : v.toString().split("\n")) {
+                s += "    " + rivi + "\n";
+            }
+            s += "\n";
+        }
+        return s;
+    }
+
 }

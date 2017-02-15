@@ -89,6 +89,7 @@ public class AlueDao implements Dao<Alue, Integer> {
     public List<Alue> findAll() throws SQLException {
         Connection connection = database.getConnection();
         // Viimeisin viesti ei toimi! Tätä varmaan sais siistimmäks?
+        // bugi#2: jos alueella ei yhtään viestiä, se ei sisälly tulokseen ollenkaan.
         String query
                 = "SELECT Alue.id, Alue.kuvaus, Alue.nimi, Vastaus.aikaleima AS viimeisinViesti, COUNT(*) AS viestienLkm "
                 + "FROM Alue, Viestiketju, Vastaus "

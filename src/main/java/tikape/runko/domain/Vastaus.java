@@ -37,4 +37,16 @@ public class Vastaus {
     public String getSisalto() {
         return sisalto;
     }
+
+    // Debuggausta varten
+    @Override
+    public String toString() {
+        String s = "[Vastaus]" + "\n";
+        s += "Id: " + id + "\n";
+        s += "KetjuId: " + ketjuId + "\n";
+        s += "Lähettäjä " + lahettaja + "\n";
+        s += "Aikaleima: " + aikaleima + "\n";
+        s += "Sisältö: " + sisalto;
+        return s;
+    }
 }

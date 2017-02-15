@@ -86,4 +86,25 @@ public class Alue {
         this.viestiketjut = viestiketjut;
     }
 
+    // Debuggausta varten
+    @Override
+    public String toString() {
+        String s = "[Alue]" + "\n";
+        s += "Id: " + id + "\n";
+        s += "Nimi: " + nimi + "\n";
+        s += "Kuvaus: " + kuvaus + "\n";
+        s += "ViestienLkm: " + viestienLkm + "\n";
+        s += "ViimeisinTimestamp: " + viimeisinTimestamp + "\n";
+        s += "Viestiketjut:" + "\n";
+
+        for (Viestiketju vk : viestiketjut) {
+            for (String rivi : vk.toString().split("\n")) {
+                s += "    " + rivi + "\n";
+            }
+            s += "\n";
+        }
+
+        return s;
+    }
+
 }
