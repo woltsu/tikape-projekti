@@ -35,11 +35,6 @@ public class Main {
         //luodaan hashmap alueista
         Map<String, Alue> alueet = new HashMap<>();
 
-        //alueita testaamista varten
-        alueet.put("Koodaus", new Alue(0, "Koodaus", "Koodaamista", 32, new Timestamp(System.currentTimeMillis()), new ArrayList<>()));
-        alueet.put("Pelit", new Alue(1, "Pelit", "Pelaamista", 22, new Timestamp(System.currentTimeMillis()), new ArrayList<>()));
-        alueet.put("Linux", new Alue(2, "Linux", "Pingviini", 12, new Timestamp(System.currentTimeMillis()), new ArrayList<>()));
-
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("alueet", alueDao.findAll());
@@ -47,34 +42,18 @@ public class Main {
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
 
-        get("/alue", (req, res) -> {
+        get("/alue/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("viestiketjut", viestiketjuDao.findAll());
+            map.put("viestiketjut", viestiketjuDao.findAllByAlue(Integer.parseInt(req.params(":id"))));
 
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
 
         get("/alue/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("viestiketju", viestiketjuDao.findOne(Integer.parseInt(req.params("tunnus"))));
+            map.put("viestiketju", viestiketjuDao.findOne(Integer.parseInt(req.params("id"))));
 
             return new ModelAndView(map, "viestiketju");
-        }, new ThymeleafTemplateEngine());
-
-        //web-palvelin saa pyynnön tietylle alueelle ja palauttaa sen perusteella muokatun web-sivun
-        get("/alue/:alue", (req, res) -> {
-            HashMap map = new HashMap<>();
-            map.put("viestiketjut", viestiketjuDao.findAll());
-
-            return new ModelAndView(map, "alue");
-        }, new ThymeleafTemplateEngine());
-
-        //web-palvelin saa pyynnon index.html ja palauttaa muokatun web-sivun
-        get("/index.html", (req, res) -> {
-            HashMap map = new HashMap<>();
-            map.put("alueet", alueet.values());
-
-            return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
 
         //"/viestiketju":n sijaan käytetään varmaankin viestiketjun id:tä, kuten /:id tai /:alue/:id

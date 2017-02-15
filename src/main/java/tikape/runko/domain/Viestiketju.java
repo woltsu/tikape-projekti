@@ -18,6 +18,10 @@ public class Viestiketju {
         this.aikaleima = aikaleima;
         this.vastaukset = vastaukset;
     }
+    
+    public int getId() {
+        return tunnus;
+    }
 
     public int getTunnus() {
         return tunnus;

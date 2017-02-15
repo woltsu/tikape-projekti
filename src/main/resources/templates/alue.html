@@ -10,8 +10,8 @@
         <h1>Tervetuloa keskustelualueelle x</h1>
 
         <ol>
-            <li th:each="opiskelija: ${viestiketjut}">
-                <span th:text="${opiskelija.nimi}">opiskelijan nimi</span> <a th:href="${'/alue/' + opiskelija.id}">linkki</a>
+            <li th:each="viestiketju: ${viestiketjut}">
+                <a th:href="@{~/alue/{id}(id=${viestiketju.id})}" th:text="${viestiketju.otsikko}">nimi</a>
             </li>
         </ol>
     </body>
