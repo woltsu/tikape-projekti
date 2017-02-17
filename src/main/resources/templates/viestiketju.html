@@ -25,7 +25,7 @@
         </div>
 
         <div class="well" id="vastaus">
-            <form method="POST" action="/viestiketju" >
+            <form method="POST" th:action="@{~/viestiketju/{id}(id=${viestiketju.id})}">
                 <div>
                     <input type="text" name="nimi" placeholder="Nimimerkki" required="" oninvalid="this.setCustomValidity('Lisää nimimerkki')"
                            oninput="setCustomValidity('')"/>

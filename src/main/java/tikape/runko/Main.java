@@ -66,11 +66,11 @@ public class Main {
             return new ModelAndView(data, "viestiketju");
         }, new ThymeleafTemplateEngine());
 
-        post("/viestiketju", (req, res) -> {
+        post("/viestiketju/:id", (req, res) -> {
             String nimi = req.queryParams("nimi");
             String viesti = req.queryParams("viesti");
-            vastaukset.add(new Vastaus(1, 1, new Timestamp(System.currentTimeMillis()), viesti, nimi));
-            res.redirect("/viestiketju");
+            vastausDao.create(new Vastaus(null, Integer.parseInt(req.params(":id")), null, viesti, nimi));
+            res.redirect("/viestiketju/" + req.params(":id"));
             return "";
         });
     }

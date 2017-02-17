@@ -8,16 +8,19 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import tikape.runko.domain.Alue;
+import tikape.runko.domain.Vastaus;
 import tikape.runko.domain.Viestiketju;
 
 public class AlueDao implements Dao<Alue, Integer> {
 
     private Database database;
     private ViestiketjuDao viestiketjuDao;
+    private VastausDao vastausDao;
 
     public AlueDao(Database database) {
         this.database = database;
         this.viestiketjuDao = new ViestiketjuDao(database);
+        this.vastausDao = new VastausDao(database);
     }
 
     @Override
@@ -87,32 +90,23 @@ public class AlueDao implements Dao<Alue, Integer> {
 
     @Override
     public List<Alue> findAll() throws SQLException {
-        Connection connection = database.getConnection();
-        // Viimeisin viesti ei toimi! Tätä varmaan sais siistimmäks?
-        // bugi#2: jos alueella ei yhtään viestiä, se ei sisälly tulokseen ollenkaan.
-        String query
-                = "SELECT Alue.id, Alue.kuvaus, Alue.nimi, Vastaus.aikaleima AS viimeisinViesti, COUNT(*) AS viestienLkm "
-                + "FROM Alue, Viestiketju, Vastaus "
-                + "WHERE Alue.id = Viestiketju.alue AND Viestiketju.tunnus = Vastaus.viestiketju "
-                + "GROUP BY Viestiketju.alue ORDER BY Alue.nimi";
-
-        PreparedStatement stmt = connection.prepareStatement(query);
-
-        ResultSet rs = stmt.executeQuery();
         List<Alue> alueet = new ArrayList<>();
-        while (rs.next()) {
-            int id = rs.getInt("id");
-            String nimi = rs.getString("nimi");
-            String kuvaus = rs.getString("kuvaus");
-            Timestamp timestamp = new Aikaleima(rs.getString("viimeisinViesti"));
-            int viestienLkm = rs.getInt("viestienLkm");
-            List<Viestiketju> viestiketjut = viestiketjuDao.findAllByAlue(id);
-            alueet.add(new Alue(id, nimi, kuvaus, viestienLkm, timestamp, viestiketjut));
+        try (Connection connection = database.getConnection()) {
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue ORDER BY nimi");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String kuvaus = rs.getString("kuvaus");
+                String nimi = rs.getString("nimi");
+                List<Vastaus> vastaukset = vastausDao.findAllByAlue(id);
+                int viestienlkm = vastaukset.size();
+                Timestamp timestamp = viestienlkm == 0 ? new Timestamp(0) : vastaukset.get(0).getAikaleima();
+                List<Viestiketju> viestiketjut = viestiketjuDao.findAllByAlue(id);
+                alueet.add(new Alue(id, nimi, kuvaus, viestienlkm, timestamp, viestiketjut));
+            }
+            rs.close();
+            stmt.close();
         }
-
-        rs.close();
-        stmt.close();
-        connection.close();
 
         return alueet;
     }

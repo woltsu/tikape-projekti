@@ -20,14 +20,16 @@ public class VastausDao implements Dao<Vastaus, Integer> {
     @Override
     public Vastaus create(Vastaus t) throws SQLException {
         try (Connection connection = database.getConnection()) {
-            String query = "INSERT INTO Vastaus (, title, status) VALUES (?, ?, ?)";
+            String query = "INSERT INTO Vastaus (nimimerkki, viestiketju, sisältö) VALUES (?, ?, ?)";
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setInt(1, t.getId());
+            ps.setString(1, t.getLahettaja());
+            ps.setInt(2, t.getKetjuId());
+            ps.setString(3, t.getSisalto());
             ps.execute();
             ps.close();
         }
 
-        return findOne(t.getId());
+        return t;
     }
 
     @Override
@@ -72,10 +74,17 @@ public class VastausDao implements Dao<Vastaus, Integer> {
         return vastaukset;
     }
 
+    /**
+     * Hae vastaukset viestiketjun mukaan. Järjestetty vanhimmasta uusimpaan.
+     *
+     * @param viestiketjuTunnus
+     * @return
+     * @throws SQLException
+     */
     public List<Vastaus> findAllByViestiketju(int viestiketjuTunnus) throws SQLException {
         List<Vastaus> vastaukset = new ArrayList<>();
         try (Connection connection = database.getConnection()) {
-            PreparedStatement st = connection.prepareStatement("SELECT * FROM Vastaus WHERE viestiketju = ?");
+            PreparedStatement st = connection.prepareStatement("SELECT * FROM Vastaus WHERE viestiketju = ? ORDER BY aikaleima");
             st.setInt(1, viestiketjuTunnus);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -86,6 +95,33 @@ public class VastausDao implements Dao<Vastaus, Integer> {
                 vastaukset.add(new Vastaus(viestinTunnus, viestiketjuTunnus, timestamp, sisalto, nimimerkki));
             }
             rs.close();
+            st.close();
+        }
+
+        return vastaukset;
+    }
+
+    /**
+     * Hae vastaukset alueen mukaan. Järjestetty uusimmasta vanhimpaan.
+     *
+     * @param alueId alueen tunnus/id.
+     * @return lista alueen viesteistä.
+     * @throws SQLException
+     */
+    public List<Vastaus> findAllByAlue(int alueId) throws SQLException {
+        List<Vastaus> vastaukset = new ArrayList<>();
+        String query = "SELECT * FROM Vastaus "
+                + "WHERE viestiketju IN (SELECT tunnus FROM Viestiketju WHERE alue = ?) "
+                + "ORDER BY aikaleima DESC";
+        try (Connection connection = database.getConnection()) {
+            PreparedStatement st = connection.prepareStatement(query);
+            st.setInt(1, alueId);
+            ResultSet s = st.executeQuery();
+            while (s.next()) {
+                Timestamp aikaleima = new Aikaleima(s.getString("aikaleima"));
+                vastaukset.add(new Vastaus(s.getInt("tunnus"), s.getInt("viestiketju"), aikaleima, s.getString("sisältö"), s.getString("nimimerkki")));
+            }
+            s.close();
             st.close();
         }
 

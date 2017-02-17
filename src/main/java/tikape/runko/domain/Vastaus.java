@@ -4,13 +4,13 @@ import java.sql.Timestamp;
 
 public class Vastaus {
 
-    private int id;
+    private Integer id;
     private int ketjuId;
     private Timestamp aikaleima;
     private String sisalto;
     private String lahettaja;
 
-    public Vastaus(int id, int ketjuId, Timestamp aikaleima, String sisalto, String lahettaja) {
+    public Vastaus(Integer id, int ketjuId, Timestamp aikaleima, String sisalto, String lahettaja) {
         this.id = id;
         this.ketjuId = ketjuId;
         this.aikaleima = aikaleima;
