@@ -44,6 +44,9 @@ public class Main {
 
         get("/alue/:id", (req, res) -> {
             HashMap map = new HashMap<>();
+            int id = Integer.parseInt(req.params(":id"));
+            Alue a = alueDao.findOne(id);
+            map.put("nimi", a.getNimi());
             map.put("viestiketjut", viestiketjuDao.findAllByAlue(Integer.parseInt(req.params(":id"))));
 
             return new ModelAndView(map, "alue");

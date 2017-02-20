@@ -7,7 +7,7 @@
     </head>
 
     <body>
-        <h1>Tervetuloa keskustelualueelle x</h1>
+        <h1>Tervetuloa keskustelualueelle <span th:text="${nimi}">nimi</span></h1>
 
         <ol>
             <li th:each="viestiketju: ${viestiketjut}">
