@@ -59,15 +59,14 @@ public class Main {
             return new ModelAndView(map, "viestiketju");
         }, new ThymeleafTemplateEngine());
 
-//        "/viestiketju":n sijaan käytetään varmaankin viestiketjun id:tä, kuten /:id tai /:alue/:id
-        get("/viestiketju", (req, res) -> {
-            HashMap data = new HashMap<>();
-
-            data.put("viestiketju", viestiketju);
-            data.put("vastaukset", vastaukset);
-
-            return new ModelAndView(data, "viestiketju");
-        }, new ThymeleafTemplateEngine());
+//        get("/viestiketju", (req, res) -> {
+//            HashMap data = new HashMap<>();
+//
+//            data.put("viestiketju", viestiketju);
+//            data.put("vastaukset", vastaukset);
+//
+//            return new ModelAndView(data, "viestiketju");
+//        }, new ThymeleafTemplateEngine());
 
         post("/viestiketju/:id", (req, res) -> {
             String nimi = req.queryParams("nimi");
