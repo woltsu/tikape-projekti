@@ -4,6 +4,7 @@
     <head>
         <title th:text="${viestiketju.otsikko}">Otsikko</title>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
         <meta charset="utf-8" />
 
         <style>
@@ -51,7 +52,9 @@
                               oninput="setCustomValidity('')"></textarea>
                 </div>
                 <div>
-                    <input type="submit" value="Lähetä viesti"/>
+                    <button type="submit" class="btn" style="">
+                        <i class="fa fa-paper-plane fa-lg" aria-hidden="true"></i>
+                    </button>
                 </div>
             </form>
         </div>
