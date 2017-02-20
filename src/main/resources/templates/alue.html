@@ -4,6 +4,8 @@
     <head>
         <title>Otsikko</title>
         <meta charset="utf-8" />
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     </head>
 
     <body>
@@ -14,5 +16,21 @@
                 <a th:href="@{~/viestiketju/{id}(id=${viestiketju.id})}" th:text="${viestiketju.otsikko}">nimi</a>
             </li>
         </ol>
+
+        <div>
+            <form method="POST" th:action="@{~/alue/{id}(id=${alue.id})}">
+                <div>
+                    <input type="text" name="aihe" placeholder="Aihe" required="" oninvalid="this.setCustomValidity('Lisää aihe')"
+                           oninput="setCustomValidity('')"/>
+                </div>
+
+                <div>
+                    <button type="submit" class="btn" style="">
+                        <i class="fa fa-paper-plane fa-lg" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+            </form>
+        </div>
     </body>
 </html>

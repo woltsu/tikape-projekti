@@ -75,5 +75,13 @@ public class Main {
             res.redirect("/viestiketju/" + req.params(":id"));
             return "";
         });
+        
+        post("/alue/:id", (req, res) -> {
+            String aihe = req.queryParams("aihe");
+            //vastausDao.create(new Vastaus(null, Integer.parseInt(req.params(":id")), null, viesti, nimi));
+            System.out.println(aihe);
+            res.redirect("/aihe/" + req.params(":id"));
+            return "";
+        });
     }
 }
