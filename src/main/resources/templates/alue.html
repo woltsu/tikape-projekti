@@ -6,36 +6,18 @@
         <meta charset="utf-8" />
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-
-        <style>
-
-            .viestiLaatikko {
-                margin: 2% 0% 1% 2%;
-            }
-
-            .otsikko {
-                margin: 1% 0% 1% 2%;
-            }
-
-            .viestiKetju {
-                margin: 0% 0% 2% 2%;
-                font-size: 150%;
-            }
-
-        </style>
-
     </head>
 
     <body>
-        <h1 class="otsikko">Tervetuloa keskustelualueelle <span th:text="${nimi}">nimi</span></h1>
+        <h1>Tervetuloa keskustelualueelle <span th:text="${nimi}">nimi</span></h1>
 
         <ol>
-            <li class="viestiKetju" th:each="viestiketju: ${viestiketjut}">
+            <li th:each="viestiketju: ${viestiketjut}">
                 <a th:href="@{~/viestiketju/{id}(id=${viestiketju.id})}" th:text="${viestiketju.otsikko}">nimi</a>
             </li>
         </ol>
 
-        <div class="viestiLaatikko">
+        <div>
             <form method="POST" th:action="@{~/alue/{id}(id=${alue.id})}">
                 <div>
                     <input type="text" name="aihe" placeholder="Aihe" required="" oninvalid="this.setCustomValidity('Lisää aihe')"
@@ -43,7 +25,7 @@
                 </div>
 
                 <div>
-                    <button type="submit" class="btn btn-primary" style="margin-top: 1%">
+                    <button type="submit" class="btn" style="">
                         <i class="fa fa-paper-plane fa-lg" aria-hidden="true"></i>
                     </button>
                 </div>
