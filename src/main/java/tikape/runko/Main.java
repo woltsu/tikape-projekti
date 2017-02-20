@@ -47,6 +47,7 @@ public class Main {
             int id = Integer.parseInt(req.params(":id"));
             Alue a = alueDao.findOne(id);
             map.put("nimi", a.getNimi());
+            map.put("alue", alueDao.findOne(Integer.parseInt(req.params(":id"))));
             map.put("viestiketjut", viestiketjuDao.findAllByAlue(Integer.parseInt(req.params(":id"))));
 
             return new ModelAndView(map, "alue");
@@ -80,7 +81,7 @@ public class Main {
             String aihe = req.queryParams("aihe");
             //vastausDao.create(new Vastaus(null, Integer.parseInt(req.params(":id")), null, viesti, nimi));
             System.out.println(aihe);
-            res.redirect("/aihe/" + req.params(":id"));
+            res.redirect("/alue/" + req.params(":id"));
             return "";
         });
     }
