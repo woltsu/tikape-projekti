@@ -19,14 +19,23 @@ import tikape.runko.domain.Viestiketju;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        
+
         // asetetaan portti jos heroku antaa PORT-ympäristömuuttujan
         if (System.getenv("PORT") != null) {
             port(Integer.valueOf(System.getenv("PORT")));
         }
-        
+
+        // käytetään oletuksena paikallista sqlite-tietokantaa
+        String jdbcOsoite = "jdbc:sqlite:foorumi.db";
+        // jos heroku antaa käyttöömme tietokantaosoitteen, otetaan se käyttöön
+        if (System.getenv("DATABASE_URL") != null) {
+            jdbcOsoite = System.getenv("DATABASE_URL");
+        }
+
+        Database database = new Database(jdbcOsoite);
+
         //luodaan tietokantaolio
-        Database database = new Database("jdbc:sqlite:foorumi.db");
+        //Database database = new Database("jdbc:sqlite:foorumi.db");
         database.init();
 
         //luodaan tietokannan käsittelyoliot
@@ -74,7 +83,6 @@ public class Main {
 //
 //            return new ModelAndView(data, "viestiketju");
 //        }, new ThymeleafTemplateEngine());
-
         post("/viestiketju/:id", (req, res) -> {
             String nimi = req.queryParams("nimi");
             String viesti = req.queryParams("viesti");
@@ -82,7 +90,7 @@ public class Main {
             res.redirect("/viestiketju/" + req.params(":id"));
             return "";
         });
-        
+
         post("/alue/:id", (req, res) -> {
             String aihe = req.queryParams("aihe");
             //vastausDao.create(new Vastaus(null, Integer.parseInt(req.params(":id")), null, viesti, nimi));
