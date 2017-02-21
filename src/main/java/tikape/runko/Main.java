@@ -64,6 +64,7 @@ public class Main {
             map.put("nimi", a.getNimi());
             map.put("alue", alueDao.findOne(Integer.parseInt(req.params(":id"))));
             map.put("viestiketjut", viestiketjuDao.findAllByAlue(Integer.parseInt(req.params(":id"))));
+            map.put("aluenimi",  alueDao.findOne(Integer.parseInt(req.params(":id"))).getNimi());
 
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
