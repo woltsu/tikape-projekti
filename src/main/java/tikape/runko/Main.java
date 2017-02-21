@@ -64,7 +64,7 @@ public class Main {
             map.put("nimi", a.getNimi());
             map.put("alue", alueDao.findOne(Integer.parseInt(req.params(":id"))));
             map.put("viestiketjut", viestiketjuDao.findAllByAlue(Integer.parseInt(req.params(":id"))));
-            map.put("aluenimi",  alueDao.findOne(Integer.parseInt(req.params(":id"))).getNimi());
+            map.put("aluenimi", alueDao.findOne(Integer.parseInt(req.params(":id"))).getNimi());
 
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
@@ -73,7 +73,7 @@ public class Main {
             HashMap map = new HashMap<>();
             map.put("viestiketju", viestiketjuDao.findOne(Integer.parseInt(req.params(":id"))));
             map.put("vastaukset", vastausDao.findAllByViestiketju(Integer.parseInt(req.params(":id"))));
-            map.put("aluenimi",  alueDao.findOne(Integer.parseInt(req.params(":alueid"))).getNimi());
+            map.put("aluenimi", alueDao.findOne(Integer.parseInt(req.params(":alueid"))).getNimi());
             return new ModelAndView(map, "viestiketju");
         }, new ThymeleafTemplateEngine());
 
@@ -88,8 +88,11 @@ public class Main {
         post("/viestiketju/:id", (req, res) -> {
             String nimi = req.queryParams("nimi");
             String viesti = req.queryParams("viesti");
+            int viestiketjuId = Integer.parseInt(req.params(":id"));
+            Viestiketju vk = viestiketjuDao.findOne(viestiketjuId);
+            Alue a = alueDao.findOne(vk.getAlue());
             vastausDao.create(new Vastaus(null, Integer.parseInt(req.params(":id")), null, viesti, nimi));
-            res.redirect("/viestiketju/" + req.params(":id"));
+            res.redirect("/" + a.getNimi() + "/" + a.getId() + "/" + viestiketjuId);
             return "";
         });
 
