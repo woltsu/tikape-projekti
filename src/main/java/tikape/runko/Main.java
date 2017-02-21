@@ -57,7 +57,7 @@ public class Main {
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
 
-        get("/alue/:id", (req, res) -> {
+        get("/:alue/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             int id = Integer.parseInt(req.params(":id"));
             Alue a = alueDao.findOne(id);
