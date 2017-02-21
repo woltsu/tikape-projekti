@@ -6,17 +6,19 @@ import java.util.List;
 public class Viestiketju {
 
     private int tunnus;
-    private int alue;
+    private int alueId;
     private String otsikko;
     private Timestamp aikaleima;
     private List<Vastaus> vastaukset;
-
-    public Viestiketju(int tunnus, int alue, String otsikko, Timestamp aikaleima, List<Vastaus> vastaukset) {
+    private Alue alue;
+    
+    public Viestiketju(int tunnus, int alueId, String otsikko, Timestamp aikaleima, List<Vastaus> vastaukset, Alue alue) {
         this.tunnus = tunnus;
-        this.alue = alue;
+        this.alueId = alueId;
         this.otsikko = otsikko;
         this.aikaleima = aikaleima;
         this.vastaukset = vastaukset;
+        this.alue = alue;
     }
     
     public int getId() {
@@ -27,8 +29,8 @@ public class Viestiketju {
         return tunnus;
     }
 
-    public int getAlue() {
-        return alue;
+    public int getAlueId() {
+        return alueId;
     }
 
     public String getOtsikko() {
@@ -54,6 +56,10 @@ public class Viestiketju {
     public void setVastaukset(List<Vastaus> vastaukset) {
         this.vastaukset = vastaukset;
     }
+    
+    public Alue getAlue() {
+        return this.alue;
+    }
 
     // Debuggausta varten
     @Override
@@ -61,7 +67,7 @@ public class Viestiketju {
         String s = "[Viestiketju]" + "\n";
         s += "Tunnus: " + tunnus + "\n";
         s += "Otsikko: " + otsikko + "\n";
-        s += "Alueen tunnus: " + alue + "\n";
+        s += "Alueen tunnus: " + alueId + "\n";
         s += "Aikaleima: " + aikaleima + "\n";
         s += "Vastaukset:" + "\n";
 

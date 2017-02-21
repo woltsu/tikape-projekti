@@ -68,7 +68,7 @@ public class Main {
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
 
-        get("/viestiketju/:id", (req, res) -> {
+        get("/:alue/:alueid/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("viestiketju", viestiketjuDao.findOne(Integer.parseInt(req.params(":id"))));
             map.put("vastaukset", vastausDao.findAllByViestiketju(Integer.parseInt(req.params(":id"))));
