@@ -5,13 +5,13 @@ import java.util.List;
 
 public class Viestiketju {
 
-    private int tunnus;
+    private Integer tunnus;
     private int alue;
     private String otsikko;
     private Timestamp aikaleima;
     private List<Vastaus> vastaukset;
 
-    public Viestiketju(int tunnus, int alue, String otsikko, Timestamp aikaleima, List<Vastaus> vastaukset) {
+    public Viestiketju(Integer tunnus, int alue, String otsikko, Timestamp aikaleima, List<Vastaus> vastaukset) {
         this.tunnus = tunnus;
         this.alue = alue;
         this.otsikko = otsikko;
