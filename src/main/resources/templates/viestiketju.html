@@ -20,6 +20,10 @@
             .viestiLaatikko {
                 margin: 0% 0% 1% 3%;
             }
+
+            .seuraava {
+                margin: 2% 0% 2% 3%;
+            }
         </style>
 
     </head>
@@ -58,9 +62,13 @@
                 </div>
             </form>
         </div>
-        
+
         <div class="seuraava">
-            <a th:href="@{~/{name}/{alueId}/{id}/{sivunumero}/next(alueId=${alue.id}, name=${alue.nimi}, id=${viestiketju.id}, sivunumero=${sivunumero})}">seuraava sivu</a>
+            <p>
+                <a th:href="@{~/{name}/{alueId}/{id}/{sivunumero}/prev(alueId=${alue.id}, name=${alue.nimi}, id=${viestiketju.id}, sivunumero=${sivunumero})}">prev</a>
+                <span th:text="${sivunumero}">1</span>
+                <a th:href="@{~/{name}/{alueId}/{id}/{sivunumero}/next(alueId=${alue.id}, name=${alue.nimi}, id=${viestiketju.id}, sivunumero=${sivunumero})}">next</a>
+            </p>
         </div>
 
     </body>
