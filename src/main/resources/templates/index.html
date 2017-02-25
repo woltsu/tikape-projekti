@@ -45,9 +45,9 @@
     			<td>Viimeisin viesti</td>
     		</tr>
     		<tr class="aluerivi" th:each="alue : ${alueet}">
-    			<td><a th:href="@{~/{alue}/{id}(id=${alue.id}, alue=${alue.nimi})}" th:text="${alue.nimi}">nimi</a></td>
-    			<td><a th:href="@{~/{alue}/{id}(id=${alue.id}, alue=${alue.nimi})}" th:text="${alue.viestienLkm}">maara</a></td>
-    			<td><a th:href="@{~/{alue}/{id}(id=${alue.id}, alue=${alue.nimi})}" th:text="${alue.viimeisin}">aika</a></td>
+    			<td><a th:href="@{~/{name}/{id}(id=${alue.id}, name=${alue.nimi})}" th:text="${alue.nimi}">nimi</a></td>
+    			<td><a th:href="@{~/{name}/{id}(id=${alue.id}, name=${alue.nimi})}" th:text="${alue.viestienLkm}">maara</a></td>
+    			<td><a th:href="@{~/{name}/{id}(id=${alue.id}, name=${alue.nimi})}" th:text="${alue.viimeisin}">aika</a></td>
     		</tr>
     	</table>
     </div>

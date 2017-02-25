@@ -64,6 +64,41 @@ public class AlueDao implements Dao<Alue, Integer> {
         return a;
     }
 
+    /**
+     * Etsi alue sen nimen perusteella. Case-INsensitive!
+     *
+     * @param name etsittävän alueen nimi.
+     * @return alue tai null, jos ei löydy.
+     * @throws SQLException
+     */
+    public Alue findOneByName(String name) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue WHERE upper(nimi) = ?");
+        stmt.setString(1, name.toUpperCase());
+
+        ResultSet rs = stmt.executeQuery();
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            return null;
+        }
+
+        int id = rs.getInt("id");
+        String nimi = rs.getString("nimi");
+        String kuvaus = rs.getString("kuvaus");
+        List<Vastaus> vastaukset = vastausDao.findAllByAlue(id);
+        List<Viestiketju> viestiketjut = viestiketjuDao.findAllByAlue(id);
+        int viestienLkm = vastaukset.size();
+        Timestamp uusin = vastaukset.get(0).getAikaleima();
+
+        Alue alue = new Alue(id, nimi, kuvaus, viestienLkm, uusin, viestiketjut);
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return alue;
+    }
+
     @Override
     public void update(Integer key, Alue t) throws SQLException {
         Connection connection = database.getConnection();
