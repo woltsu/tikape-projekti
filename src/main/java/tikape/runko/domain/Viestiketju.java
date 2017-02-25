@@ -5,24 +5,14 @@ import java.util.List;
 
 public class Viestiketju {
 
-<<<<<<< HEAD
     private int tunnus;
     private int alueId;
-=======
-    private Integer tunnus;
     private int alue;
->>>>>>> origin/master
     private String otsikko;
     private Timestamp aikaleima;
     private List<Vastaus> vastaukset;
-<<<<<<< HEAD
-    private Alue alue;
-    
-    public Viestiketju(int tunnus, int alueId, String otsikko, Timestamp aikaleima, List<Vastaus> vastaukset, Alue alue) {
-=======
 
     public Viestiketju(Integer tunnus, int alue, String otsikko, Timestamp aikaleima, List<Vastaus> vastaukset) {
->>>>>>> origin/master
         this.tunnus = tunnus;
         this.alueId = alueId;
         this.otsikko = otsikko;
@@ -30,7 +20,7 @@ public class Viestiketju {
         this.vastaukset = vastaukset;
         this.alue = alue;
     }
-    
+
     public int getId() {
         return tunnus;
     }
@@ -65,10 +55,6 @@ public class Viestiketju {
 
     public void setVastaukset(List<Vastaus> vastaukset) {
         this.vastaukset = vastaukset;
-    }
-    
-    public Alue getAlue() {
-        return this.alue;
     }
 
     // Debuggausta varten

@@ -82,7 +82,7 @@ public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
                 String otsikko = rs.getString("otsikko");
                 Timestamp aikaleima = new Aikaleima(rs.getString("aikaleima"));
                 List<Vastaus> vastaukset = vastausDao.findAllByViestiketju(tunnus);
-                viestiketjut.add(new Viestiketju(tunnus, alueTunnus, otsikko, aikaleima, vastaukset);
+                viestiketjut.add(new Viestiketju(tunnus, alueTunnus, otsikko, aikaleima, vastaukset));
             }
             rs.close();
             st.close();
@@ -107,15 +107,10 @@ public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO Viestiketju VALUES(?, ?)");
 
-<<<<<<< HEAD
         stmt.setObject(1, t.getTunnus());
         stmt.setObject(2, t.getAlueId());
         stmt.setObject(3, t.getOtsikko());
         stmt.setObject(4, t.getAikaleima());
-=======
-        stmt.setInt(1, t.getAlue());
-        stmt.setString(2, t.getOtsikko());
->>>>>>> origin/master
         stmt.executeUpdate();
 
         stmt.close();
