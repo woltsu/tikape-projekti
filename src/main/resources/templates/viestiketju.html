@@ -24,11 +24,19 @@
             .seuraava {
                 margin: 2% 0% 2% 3%;
             }
+            
+            .linkki {
+                margin: 1% 0% 0% 1%;
+            }
         </style>
 
     </head>
 
     <body>
+        <p>
+            <a th:href="@{~/}" class="linkki">Etusivulle</a>
+            <a th:href="@{~/{name}/{alueId}(alueId=${alue.id}, name=${alue.nimi})}" class="linkki">Takaisin</a>
+        </p>
         <div>
             <h1 class="otsikko"><span th:text="${viestiketju.otsikko}">viestiketjun nimi</span></h1>
         </div>
