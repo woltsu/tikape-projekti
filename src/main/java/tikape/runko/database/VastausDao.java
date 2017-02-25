@@ -101,6 +101,27 @@ public class VastausDao implements Dao<Vastaus, Integer> {
         return vastaukset;
     }
 
+    public List<Vastaus> findTenByViestiketju(int viestiketjuTunnus, int offset) throws SQLException {
+        List<Vastaus> vastaukset = new ArrayList<>();
+        try (Connection connection = database.getConnection()) {
+            PreparedStatement st = connection.prepareStatement("SELECT * FROM Vastaus WHERE viestiketju = ? ORDER BY aikaleima LIMIT ?, 10");
+            st.setInt(1, viestiketjuTunnus);
+            st.setInt(2, offset);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int viestinTunnus = rs.getInt("tunnus");
+                Timestamp timestamp = new Aikaleima(rs.getString("aikaleima"));
+                String sisalto = rs.getString("sisältö");
+                String nimimerkki = rs.getString("nimimerkki");
+                vastaukset.add(new Vastaus(viestinTunnus, viestiketjuTunnus, timestamp, sisalto, nimimerkki));
+            }
+            rs.close();
+            st.close();
+        }
+
+        return vastaukset;
+    }
+
     /**
      * Hae vastaukset alueen mukaan. Järjestetty uusimmasta vanhimpaan.
      *

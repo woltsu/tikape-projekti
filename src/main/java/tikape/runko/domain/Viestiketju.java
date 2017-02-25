@@ -27,7 +27,7 @@ public class Viestiketju {
         return tunnus;
     }
 
-    public int getAlue() {
+    public int getAlueId() {
         return this.alue;
     }
 
@@ -61,7 +61,7 @@ public class Viestiketju {
         String s = "[Viestiketju]" + "\n";
         s += "Tunnus: " + tunnus + "\n";
         s += "Otsikko: " + otsikko + "\n";
-        s += "Alueen tunnus: " + alueId + "\n";
+        s += "Alueen tunnus: " + alue + "\n";
         s += "Aikaleima: " + aikaleima + "\n";
         s += "Vastaukset:" + "\n";
 

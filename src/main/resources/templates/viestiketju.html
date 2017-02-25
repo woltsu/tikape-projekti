@@ -42,7 +42,7 @@
         </div>
 
         <div class="viestiLaatikko">
-            <form method="POST" th:action="@{~/viestiketju/{id}(id=${viestiketju.id})}">
+            <form method="POST" th:action="@{~/{name}/{alueId}/{id}/{sivunumero}(name=${alue.nimi}, alueId=${alue.id}, id=${viestiketju.id}, sivunumero=${sivunumero})}">
                 <div>
                     <input type="text" name="nimi" placeholder="Nimimerkki" required="" oninvalid="this.setCustomValidity('Lisää nimimerkki')"
                            oninput="setCustomValidity('')"/>
@@ -57,6 +57,10 @@
                     </button>
                 </div>
             </form>
+        </div>
+        
+        <div class="seuraava">
+            <a th:href="@{~/{name}/{alueId}/{id}/{sivunumero}/next(alueId=${alue.id}, name=${alue.nimi}, id=${viestiketju.id}, sivunumero=${sivunumero})}">seuraava sivu</a>
         </div>
 
     </body>
