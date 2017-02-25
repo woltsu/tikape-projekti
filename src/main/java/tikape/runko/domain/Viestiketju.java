@@ -6,7 +6,6 @@ import java.util.List;
 public class Viestiketju {
 
     private int tunnus;
-    private int alueId;
     private int alue;
     private String otsikko;
     private Timestamp aikaleima;
@@ -14,7 +13,6 @@ public class Viestiketju {
 
     public Viestiketju(Integer tunnus, int alue, String otsikko, Timestamp aikaleima, List<Vastaus> vastaukset) {
         this.tunnus = tunnus;
-        this.alueId = alueId;
         this.otsikko = otsikko;
         this.aikaleima = aikaleima;
         this.vastaukset = vastaukset;
@@ -29,8 +27,8 @@ public class Viestiketju {
         return tunnus;
     }
 
-    public int getAlueId() {
-        return alueId;
+    public int getAlue() {
+        return this.alue;
     }
 
     public String getOtsikko() {

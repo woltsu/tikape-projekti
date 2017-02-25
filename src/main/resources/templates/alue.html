@@ -13,11 +13,7 @@
 
         <ol>
             <li th:each="viestiketju: ${viestiketjut}">
-<<<<<<< HEAD
-                <a th:href="@{~/{alue}/{alueid}/{id}(id=${viestiketju.id}, alue=${viestiketju.alue.nimi}, alueid=${viestiketju.alue.id})}" th:text="${viestiketju.otsikko}">nimi</a>
-=======
                 <a th:href="@{~/{alue}/{alueid}/{id}(id=${viestiketju.id}, alue=${aluenimi}, alueid=${viestiketju.alue})}" th:text="${viestiketju.otsikko}">nimi</a>
->>>>>>> origin/master
             </li>
         </ol>
 
