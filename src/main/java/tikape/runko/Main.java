@@ -82,6 +82,9 @@ public class Main {
         
         Spark.get("/:alue/:alueid/:id/:sivunumero/next", (req, res) -> {
             int uusiSivunumero = Integer.parseInt(req.params(":sivunumero")) + 1;
+            if (vastausDao.findTenByViestiketju(Integer.parseInt(req.params(":id")), uusiSivunumero * 10 - 10).size() == 0) {
+                uusiSivunumero--;
+            }
             String alue = req.params(":alue");
             String alueId = req.params(":alueid");
             String id = req.params(":id");
