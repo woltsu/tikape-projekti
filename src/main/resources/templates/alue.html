@@ -12,11 +12,18 @@
         <a th:href="@{~/}" style="margin: 1% 0% 0% 1%">Etusivulle</a>
         <h1>Tervetuloa keskustelualueelle <span th:text="${nimi}">nimi</span></h1>
 
-        <ol>
-            <li th:each="viestiketju: ${viestiketjut}">
-                <a th:href="@{~/{alue}/{alueid}/{id}/1(id=${viestiketju.id}, alue=${aluenimi}, alueid=${viestiketju.alueId})}" th:text="${viestiketju.otsikko}">nimi</a>
-            </li>
-        </ol>
+        <table>
+            <tr>
+                <th>Viestiketju</th>
+                <th>Viestejä</th>
+                <th>Viimeisin viesti</th>
+            </tr>
+            <tr th:each="viestiketju: ${viestiketjut}">
+                <td><a th:href="@{~/{alue}/{alueid}/{id}/1(id=${viestiketju.id}, alue=${aluenimi}, alueid=${viestiketju.alueId})}" th:text="${viestiketju.otsikko}">nimi</a></td>
+                <td th:text="${viestiketju.vastaukset.size}"></td>
+                <td th:text="${viestiketju.uusinAikaleima != null} ? ${viestiketju.uusinAikaleima} : 'ei viestejä'"></td>
+            </tr>
+        </table>
 
         <div>
             <form method="POST" th:action="@{~/alue/{id}(id=${alue.id})}">

@@ -135,7 +135,7 @@ public class AlueDao implements Dao<Alue, Integer> {
                 String nimi = rs.getString("nimi");
                 List<Vastaus> vastaukset = vastausDao.findAllByAlue(id);
                 int viestienlkm = vastaukset.size();
-                Timestamp timestamp = viestienlkm == 0 ? new Timestamp(0) : vastaukset.get(0).getAikaleima();
+                Timestamp timestamp = viestienlkm == 0 ? null : vastaukset.get(0).getAikaleima();
                 List<Viestiketju> viestiketjut = viestiketjuDao.findAllByAlue(id);
                 alueet.add(new Alue(id, nimi, kuvaus, viestienlkm, timestamp, viestiketjut));
             }

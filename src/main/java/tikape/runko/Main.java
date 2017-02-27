@@ -1,12 +1,10 @@
 package tikape.runko;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import spark.ModelAndView;
-import spark.Spark;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.runko.database.AlueDao;
@@ -63,9 +61,9 @@ public class Main {
             int id = Integer.parseInt(req.params(":id"));
             Alue a = alueDao.findOne(id);
             map.put("nimi", a.getNimi());
-            map.put("alue", alueDao.findOne(Integer.parseInt(req.params(":id"))));
-            map.put("viestiketjut", viestiketjuDao.findAllByAlue(Integer.parseInt(req.params(":id"))));
-            map.put("aluenimi", alueDao.findOne(Integer.parseInt(req.params(":id"))).getNimi());
+            map.put("alue", a);
+            map.put("viestiketjut", viestiketjuDao.findAllByAlue(id));
+            map.put("aluenimi", alueDao.findOne(id).getNimi());
 
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
@@ -80,7 +78,7 @@ public class Main {
             return new ModelAndView(map, "viestiketju");
         }, new ThymeleafTemplateEngine());
 
-        Spark.get("/:alue/:alueid/:id/:sivunumero/next", (req, res) -> {
+        get("/:alue/:alueid/:id/:sivunumero/next", (req, res) -> {
             int uusiSivunumero = Integer.parseInt(req.params(":sivunumero")) + 1;
             if (vastausDao.findTenByViestiketju(Integer.parseInt(req.params(":id")), uusiSivunumero * 10 - 10).size() == 0) {
                 uusiSivunumero--;
@@ -92,7 +90,7 @@ public class Main {
             return "ok";
         });
 
-        Spark.get("/:alue/:alueid/:id/:sivunumero/prev", (req, res) -> {
+        get("/:alue/:alueid/:id/:sivunumero/prev", (req, res) -> {
             int uusiSivunumero = Integer.parseInt(req.params(":sivunumero")) - 1;
             if (uusiSivunumero < 1) {
                 uusiSivunumero++;
@@ -129,8 +127,8 @@ public class Main {
 
         post("/alue/:id", (req, res) -> {
             String aihe = req.queryParams("aihe");
-            //vastausDao.create(new Vastaus(null, Integer.parseInt(req.params(":id")), null, viesti, nimi));
-            System.out.println(aihe);
+            int alueId = Integer.parseInt(req.params((":id")));
+            viestiketjuDao.create(new Viestiketju(alueId, aihe));
             res.redirect("/alue/" + req.params(":id"));
             return "";
         });

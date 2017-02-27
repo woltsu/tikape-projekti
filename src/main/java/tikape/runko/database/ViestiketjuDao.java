@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import org.sqlite.SQLite;
 import tikape.runko.domain.Vastaus;
 import tikape.runko.domain.Viestiketju;
 
@@ -24,8 +23,12 @@ public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
     @Override
     public Viestiketju findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viestiketju WHERE tunnus = ?");
-        stmt.setObject(1, key);
+        String query = "SELECT vk.*, v.aikaleima AS uusinviesti "
+                + "FROM Viestiketju vk LEFT JOIN Vastaus v ON v.aikaleima IN "
+                + "(SELECT MAX(aikaleima) FROM Vastaus WHERE viestiketju = vk.tunnus) "
+                + "WHERE vk.tunnus = ? ORDER BY uusinviesti DESC";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setInt(1, key);
 
         ResultSet rs = stmt.executeQuery();
         boolean hasOne = rs.next();
@@ -37,9 +40,11 @@ public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
         int alue = rs.getInt("alue");
         String otsikko = rs.getString("otsikko");
         Timestamp aikaleima = new Aikaleima(rs.getString("aikaleima"));
+        String tsString = rs.getString(("uusinviesti"));
+        Timestamp uusinViesti = tsString == null ? null : new Aikaleima(tsString);
 
         List<Vastaus> vastaukset = vastausDao.findAllByViestiketju(key);
-        Viestiketju vk = new Viestiketju(tunnus, alue, otsikko, aikaleima, vastaukset);
+        Viestiketju vk = new Viestiketju(tunnus, alue, otsikko, aikaleima, uusinViesti, vastaukset);
 
         rs.close();
         stmt.close();
@@ -51,7 +56,11 @@ public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
     @Override
     public List<Viestiketju> findAll() throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viestiketju");
+        String query = "SELECT vk.*, v.aikaleima AS uusinviesti "
+                + "FROM Viestiketju vk LEFT JOIN Vastaus v ON v.aikaleima IN "
+                + "(SELECT MAX(aikaleima) FROM Vastaus WHERE viestiketju = vk.tunnus) "
+                + "ORDER BY uusinviesti DESC";
+        PreparedStatement stmt = connection.prepareStatement(query);
 
         ResultSet rs = stmt.executeQuery();
         List<Viestiketju> viestiketjut = new ArrayList<>();
@@ -60,8 +69,9 @@ public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
             int alue = rs.getInt("alue");
             String otsikko = rs.getString("otsikko");
             Timestamp aikaleima = new Aikaleima(rs.getString("aikaleima"));
+            Timestamp uusinViesti = new Aikaleima(rs.getString("uusinviesti"));
             List<Vastaus> vastaukset = vastausDao.findAllByViestiketju(tunnus);
-            viestiketjut.add(new Viestiketju(tunnus, alue, otsikko, aikaleima, vastaukset));
+            viestiketjut.add(new Viestiketju(tunnus, alue, otsikko, aikaleima, uusinViesti, vastaukset));
         }
 
         rs.close();
@@ -74,7 +84,11 @@ public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
     public List<Viestiketju> findAllByAlue(int alueTunnus) throws SQLException {
         List<Viestiketju> viestiketjut = new ArrayList<>();
         try (Connection connection = database.getConnection()) {
-            PreparedStatement st = connection.prepareStatement("SELECT * FROM Viestiketju WHERE alue = ?");
+            String query = "SELECT vk.*, v.aikaleima AS uusinviesti "
+                    + "FROM Viestiketju vk LEFT JOIN Vastaus v ON v.aikaleima IN "
+                    + "(SELECT MAX(aikaleima) FROM Vastaus WHERE viestiketju = vk.tunnus) "
+                    + "WHERE vk.alue = ? ORDER BY uusinviesti DESC";
+            PreparedStatement st = connection.prepareStatement(query);
             st.setInt(1, alueTunnus);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -82,7 +96,9 @@ public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
                 String otsikko = rs.getString("otsikko");
                 Timestamp aikaleima = new Aikaleima(rs.getString("aikaleima"));
                 List<Vastaus> vastaukset = vastausDao.findAllByViestiketju(tunnus);
-                viestiketjut.add(new Viestiketju(tunnus, alueTunnus, otsikko, aikaleima, vastaukset));
+                String timestampSt = rs.getString("uusinviesti");
+                Timestamp uusinAikaleima = timestampSt == null ? null : new Aikaleima(timestampSt);
+                viestiketjut.add(new Viestiketju(tunnus, alueTunnus, otsikko, aikaleima, uusinAikaleima, vastaukset));
             }
             rs.close();
             st.close();
@@ -105,18 +121,16 @@ public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
     @Override
     public Viestiketju create(Viestiketju t) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Viestiketju VALUES(?, ?)");
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Viestiketju (alue, otsikko) VALUES(?, ?)");
 
-        stmt.setObject(1, t.getTunnus());
-        stmt.setObject(2, t.getAlueId());
-        stmt.setObject(3, t.getOtsikko());
-        stmt.setObject(4, t.getAikaleima());
+        stmt.setInt(1, t.getAlueId());
+        stmt.setString(2, t.getOtsikko());
         stmt.executeUpdate();
 
         stmt.close();
         connection.close();
 
-        return findOne(t.getTunnus());
+        return t;
     }
 
     @Override

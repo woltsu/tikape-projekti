@@ -5,18 +5,28 @@ import java.util.List;
 
 public class Viestiketju {
 
-    private int tunnus;
+    private Integer tunnus;
     private int alue;
     private String otsikko;
     private Timestamp aikaleima;
+    private Timestamp uusinAikaleima;
     private List<Vastaus> vastaukset;
 
-    public Viestiketju(Integer tunnus, int alue, String otsikko, Timestamp aikaleima, List<Vastaus> vastaukset) {
+    public Viestiketju(Integer tunnus, int alue, String otsikko, Timestamp aikaleima, Timestamp uusinAikaleima, List<Vastaus> vastaukset) {
         this.tunnus = tunnus;
         this.otsikko = otsikko;
         this.aikaleima = aikaleima;
+        this.uusinAikaleima = uusinAikaleima;
         this.vastaukset = vastaukset;
         this.alue = alue;
+    }
+
+    public Viestiketju(int alue, String otsikko) {
+        this(null, alue, otsikko, null, null, null);
+    }
+
+    public Timestamp getUusinAikaleima() {
+        return uusinAikaleima;
     }
 
     public int getId() {
