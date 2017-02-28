@@ -6,26 +6,58 @@
         <meta charset="utf-8" />
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+        <style>
+            body {
+                margin: 25px;
+            }
+            div.viestiketjut table {
+                border-style: none;
+                width: 500px;
+            }
+
+            div.viestiketjut table tr:nth-child(even){
+                background-color: #dddddd;
+            }
+
+            a {
+                display: block;
+                height: 100%;
+                width: 100%;
+                text-decoration: none;
+                color: black;
+            }
+
+            div.viestiketjut table tr.aluerivi:hover:not(.active) {
+                background-color: #bfbfbf;
+                color: white;
+                border-collapse: collapse;
+            }
+            
+            a#takaisin {
+            }
+        </style>
     </head>
 
     <body>
-        <a th:href="@{~/}" style="margin: 1% 0% 0% 1%">Etusivulle</a>
+        <a id="takaisin" th:href="@{~/}" style="margin: 1% 0% 0% 1%">Etusivulle</a>
         <h1>Tervetuloa keskustelualueelle <span th:text="${nimi}">nimi</span></h1>
-
+        <div class='viestiketjut'>
         <table>
             <tr>
                 <th>Viestiketju</th>
-                <th>Viestejä</th>
+                <th>Viestej&auml;</th>
                 <th>Viimeisin viesti</th>
             </tr>
             <tr th:each="viestiketju: ${viestiketjut}">
                 <td><a th:href="@{~/{alue}/{alueid}/{id}/1(id=${viestiketju.id}, alue=${aluenimi}, alueid=${viestiketju.alueId})}" th:text="${viestiketju.otsikko}">nimi</a></td>
                 <td th:text="${viestiketju.vastaukset.size}"></td>
-                <td th:text="${viestiketju.uusinAikaleima != null} ? ${viestiketju.uusinAikaleima} : 'ei viestejä'"></td>
+                <td th:text="${viestiketju.uusinAikaleima != null} ? ${viestiketju.uusinAikaleima} : 'ei viestej&auml;'"></td>
             </tr>
         </table>
 
         <div>
+            <br/>
+            Lis&auml;&auml; aihe
             <form method="POST" th:action="@{~/alue/{id}(id=${alue.id})}">
                 <div>
                     <input type="text" name="aihe" placeholder="Aihe" required="" oninvalid="this.setCustomValidity('Lisää aihe')"
@@ -39,6 +71,7 @@
                 </div>
 
             </form>
+        </div>
         </div>
     </body>
 </html>
