@@ -38,7 +38,7 @@
     <body>
         <p>
             <a th:href="@{~/}" class="linkki">Etusivulle</a>
-            <a th:href="@{~/{name}/{alueId}(alueId=${alue.id}, name=${alue.nimi})}" class="linkki">Takaisin</a>
+            <a th:href="@{~/{name}/{alueId}?sivu=1(alueId=${alue.id}, name=${alue.nimi})}" class="linkki">Takaisin</a>
         </p>
         <div>
             <h1 class="otsikko"><span th:text="${viestiketju.otsikko}">viestiketjun nimi</span></h1>

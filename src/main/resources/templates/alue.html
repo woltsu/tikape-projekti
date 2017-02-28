@@ -32,7 +32,7 @@
                 color: white;
                 border-collapse: collapse;
             }
-            
+
             a#takaisin {
             }
         </style>
@@ -42,36 +42,44 @@
         <a id="takaisin" th:href="@{~/}" style="margin: 1% 0% 0% 1%">Etusivulle</a>
         <h1>Tervetuloa keskustelualueelle <span th:text="${nimi}">nimi</span></h1>
         <div class='viestiketjut'>
-        <table>
-            <tr>
-                <th>Viestiketju</th>
-                <th>Viestej&auml;</th>
-                <th>Viimeisin viesti</th>
-            </tr>
-            <tr th:each="viestiketju: ${viestiketjut}">
-                <td><a th:href="@{~/{alue}/{alueid}/{id}/1(id=${viestiketju.id}, alue=${aluenimi}, alueid=${viestiketju.alueId})}" th:text="${viestiketju.otsikko}">nimi</a></td>
-                <td th:text="${viestiketju.vastaukset.size}"></td>
-                <td th:text="${viestiketju.uusinAikaleima != null} ? ${viestiketju.uusinAikaleima} : 'ei viestej&auml;'"></td>
-            </tr>
-        </table>
+            <table>
+                <tr>
+                    <th>Viestiketju</th>
+                    <th>Viestej&auml;</th>
+                    <th>Viimeisin viesti</th>
+                </tr>
+                <tr th:each="viestiketju: ${viestiketjut}">
+                    <td><a th:href="@{~/{alue}/{alueid}/{id}/1(id=${viestiketju.id}, alue=${aluenimi}, alueid=${viestiketju.alueId})}" th:text="${viestiketju.otsikko}">nimi</a></td>
+                    <td th:text="${viestiketju.vastaukset.size}"></td>
+                    <td th:text="${viestiketju.uusinAikaleima != null} ? ${viestiketju.uusinAikaleima} : 'ei viestej&auml;'"></td>
+                </tr>
+            </table>
 
-        <div>
-            <br/>
-            Lis&auml;&auml; aihe
-            <form method="POST" th:action="@{~/alue/{id}(id=${alue.id})}">
-                <div>
-                    <input type="text" name="aihe" placeholder="Aihe" required="" oninvalid="this.setCustomValidity('Lisää aihe')"
-                           oninput="setCustomValidity('')"/>
-                </div>
+            <div class="seuraava">
+                <p>
+                    <a th:href="@{~/{name}/{alueId}?sivu={sivunumero}(alueId=${alue.id}, name=${alue.nimi}, sivunumero=${sivuedellinen})}">prev</a>
+                    <span th:text="${sivunykyinen}">1</span>
+                    <a th:href="@{~/{name}/{alueId}?sivu={sivunumero}(alueId=${alue.id}, name=${alue.nimi}, sivunumero=${sivuseuraava})}">next</a>
+                </p>
+            </div>
 
-                <div>
-                    <button type="submit" class="btn btn-primary" style="">
-                        <i class="fa fa-paper-plane fa-lg" aria-hidden="true"></i>
-                    </button>
-                </div>
+            <div>
+                <br/>
+                Lis&auml;&auml; aihe
+                <form method="POST" th:action="@{~/alue/{id}(id=${alue.id})}">
+                    <div>
+                        <input type="text" name="aihe" placeholder="Aihe" required="" oninvalid="this.setCustomValidity('Lisää aihe')"
+                               oninput="setCustomValidity('')"/>
+                    </div>
 
-            </form>
-        </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary" style="">
+                            <i class="fa fa-paper-plane fa-lg" aria-hidden="true"></i>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
         </div>
     </body>
 </html>
