@@ -8,18 +8,12 @@ import java.util.regex.Pattern;
 import spark.ModelAndView;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
-import tikape.runko.database.AlueDao;
-import tikape.runko.database.Database;
-import tikape.runko.database.VastausDao;
-import tikape.runko.database.ViestiketjuDao;
-import tikape.runko.domain.Alue;
-import tikape.runko.domain.Vastaus;
-import tikape.runko.domain.Viestiketju;
+import tikape.runko.database.*;
+import tikape.runko.domain.*;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-
         // asetetaan portti jos heroku antaa PORT-ympäristömuuttujan
         if (System.getenv("PORT") != null) {
             port(Integer.valueOf(System.getenv("PORT")));
@@ -32,23 +26,14 @@ public class Main {
             jdbcOsoite = System.getenv("DATABASE_URL");
         }
 
-        Database database = new Database(jdbcOsoite);
-
         //luodaan tietokantaolio
-        //Database database = new Database("jdbc:sqlite:foorumi.db");
+        Database database = new Database(jdbcOsoite);
         database.init();
 
         //luodaan tietokannan käsittelyoliot
         ViestiketjuDao viestiketjuDao = new ViestiketjuDao(database);
         AlueDao alueDao = new AlueDao(database);
         VastausDao vastausDao = new VastausDao(database);
-
-        //testailua
-        Viestiketju viestiketju = viestiketjuDao.findOne(1);
-        List<Vastaus> vastaukset = vastausDao.findAll();
-
-        //luodaan hashmap alueista
-        Map<String, Alue> alueet = new HashMap<>();
 
         before("*", (req, res) -> {
             Pattern regex = Pattern.compile("<.*>");
@@ -81,7 +66,6 @@ public class Main {
             map.put("alue", a);
             map.put("viestiketjut", viestiketjuDao.findTenByAlue(alueid, offset));
             map.put("aluenimi", alueDao.findOne(id).getNimi());
-            System.out.println("alueidmetodi");
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
 
@@ -119,13 +103,13 @@ public class Main {
             return "ok";
         });
 
-        post("/:alue/:alueId/:id/:sivunumero", (req, res) -> {
+        post("/:alue/:alueid/:id/:sivunumero", (req, res) -> {
             String nimi = req.queryParams("nimi");
             String viesti = req.queryParams("viesti");
             vastausDao.create(new Vastaus(null, Integer.parseInt(req.params(":id")), null, viesti, nimi));
 
             String alue = req.params(":alue");
-            String alueId = req.params(":alueId");
+            String alueId = req.params(":alueid");
             String id = req.params(":id");
             String sivunumero = req.params(":sivunumero");
 
@@ -133,7 +117,6 @@ public class Main {
 
             return "";
         });
-
 
         get("/:alue/:alueid/:id/:sivunumero/next", (req, res) -> {
             int uusiSivunumero = Integer.parseInt(req.params(":sivunumero")) + 1;
@@ -162,7 +145,7 @@ public class Main {
         post("/:alue/:alueId/:id/:sivunumero", (req, res) -> {
             String nimi = req.queryParams("nimi");
             String viesti = req.queryParams("viesti");
-            vastausDao.create(new Vastaus(null, Integer.parseInt(req.params(":id")), null, viesti, nimi));
+            vastausDao.create(new Vastaus(Integer.parseInt(req.params(":id")), viesti, nimi));
 
             String alue = req.params(":alue");
             String alueId = req.params(":alueId");

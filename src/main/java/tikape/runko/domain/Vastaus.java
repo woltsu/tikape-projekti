@@ -17,6 +17,10 @@ public class Vastaus {
         this.sisalto = sisalto;
         this.lahettaja = lahettaja;
     }
+    
+    public Vastaus(int ketjuId, String sisalto, String lahettaja) {
+        this(null, ketjuId, null, sisalto, lahettaja);
+    }
 
     public Integer getId() {
         return id;

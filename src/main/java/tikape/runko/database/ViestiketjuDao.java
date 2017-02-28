@@ -126,11 +126,13 @@ public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
         stmt.setInt(1, t.getAlueId());
         stmt.setString(2, t.getOtsikko());
         stmt.executeUpdate();
+        ResultSet rs = connection.createStatement().executeQuery("SELECT last_insert_rowid() AS id");
+        int newId = rs.getInt("id");
         
         stmt.close();
         connection.close();
         
-        return t;
+        return findOne(newId);
     }
     
     @Override
