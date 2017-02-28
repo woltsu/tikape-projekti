@@ -1,9 +1,10 @@
 package tikape.runko;
 
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import spark.ModelAndView;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
@@ -48,6 +49,16 @@ public class Main {
 
         //luodaan hashmap alueista
         Map<String, Alue> alueet = new HashMap<>();
+
+        before("*", (req, res) -> {
+            Pattern regex = Pattern.compile("<.*>");
+            for (String param : req.queryParams()) {
+                Matcher matcher = regex.matcher(req.queryParams(param));
+                if (matcher.find()) {
+                    halt(403, "Älä syötä html kenttiin.");
+                }
+            }
+        });
 
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
