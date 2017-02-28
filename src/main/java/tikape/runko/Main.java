@@ -1,6 +1,5 @@
 package tikape.runko;
 
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +47,15 @@ public class Main {
 
         //luodaan hashmap alueista
         Map<String, Alue> alueet = new HashMap<>();
+
+        before("*", (req, res) -> {
+            for (String param : req.queryParams()) {
+                String val = req.queryParams(param);
+                if (val.matches("<.*>")) {
+                    halt(403, "Älä syötä html kenttiin.");
+                }
+            }
+        });
 
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
