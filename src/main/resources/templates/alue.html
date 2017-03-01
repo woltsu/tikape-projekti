@@ -20,7 +20,6 @@
             }
 
             a {
-                display: block;
                 height: 100%;
                 width: 100%;
                 text-decoration: none;
@@ -40,7 +39,7 @@
 
     <body>
         <a id="takaisin" th:href="@{~/}" style="margin: 1% 0% 0% 1%">Etusivulle</a>
-        <h1>Tervetuloa keskustelualueelle <span th:text="${nimi}">nimi</span></h1>
+        <h1>Tervetuloa keskustelualueelle <span th:text="${alue.nimi}">nimi</span></h1>
         <div class='viestiketjut'>
             <table>
                 <tr>
@@ -49,24 +48,22 @@
                     <th>Viimeisin viesti</th>
                 </tr>
                 <tr th:each="viestiketju: ${viestiketjut}">
-                    <td><a th:href="@{~/{alue}/{alueid}/{id}/1(id=${viestiketju.id}, alue=${aluenimi}, alueid=${viestiketju.alueId})}" th:text="${viestiketju.otsikko}">nimi</a></td>
+                    <td><a th:href="@{~/{alue}/{alueid}/{id}(id=${viestiketju.id}, alue=${alue.nimi}, alueid=${viestiketju.alueId}, sivu=1)}" th:text="${viestiketju.otsikko}">nimi</a></td>
                     <td th:text="${viestiketju.vastaukset.size}"></td>
                     <td th:text="${viestiketju.uusinAikaleima != null} ? ${viestiketju.uusinAikaleima} : 'ei viestej&auml;'"></td>
                 </tr>
             </table>
 
-            <div class="seuraava">
-                <p>
-                    <a th:href="@{~/{name}/{alueId}?sivu={sivunumero}(alueId=${alue.id}, name=${alue.nimi}, sivunumero=${sivuedellinen})}">prev</a>
-                    <span th:text="${sivunykyinen}">1</span>
-                    <a th:href="@{~/{name}/{alueId}?sivu={sivunumero}(alueId=${alue.id}, name=${alue.nimi}, sivunumero=${sivuseuraava})}">next</a>
-                </p>
+            <div>
+                <a th:if="${sivunumero gt 1}" th:href="@{~/{name}/{alueId}(alueId=${alue.id}, name=${alue.nimi}, sivu=${sivunumero - 1})}">prev</a>
+                <span th:text="${sivunumero}">sivun numero</span>
+                <a th:if="${sivunumero * 10 lt alue.viestiketjut.size}" th:href="@{~/{name}/{alueId}(alueId=${alue.id}, name=${alue.nimi}, sivu=${sivunumero + 1})}">next</a>
             </div>
 
             <div>
                 <br/>
                 Lis&auml;&auml; aihe
-                <form method="POST" th:action="@{~/alue/{id}(id=${alue.id})}">
+                <form method="POST" th:action="@{~/{nimi}/{id}(nimi=${alue.nimi}, id=${alue.id})}">
                     <div>
                         <input type="text" name="aihe" placeholder="Aihe" required="" oninvalid="this.setCustomValidity('Lisää aihe')"
                                oninput="setCustomValidity('')"/>

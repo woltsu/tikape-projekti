@@ -57,7 +57,7 @@
         </div>
 
         <div class="viestiLaatikko">
-            <form method="POST" th:action="@{~/{name}/{alueId}/{id}/{sivunumero}(name=${alue.nimi}, alueId=${alue.id}, id=${viestiketju.id}, sivunumero=${sivunumero})}">
+            <form method="POST" th:action="@{~/{name}/{alueId}/{id}(name=${alue.nimi}, alueId=${alue.id}, id=${viestiketju.id}, sivu=${sivunumero})}">
                 <div>
                     <input type="text" name="nimi" placeholder="Nimimerkki" required="" oninvalid="this.setCustomValidity('Lisää nimimerkki')"
                            oninput="setCustomValidity('')"/>
@@ -76,9 +76,9 @@
 
         <div class="seuraava">
             <p>
-                <a th:href="@{~/{name}/{alueId}/{id}/{sivunumero}/prev(alueId=${alue.id}, name=${alue.nimi}, id=${viestiketju.id}, sivunumero=${sivunumero})}">prev</a>
+                <a th:if="${sivunumero gt 1}" th:href="@{~/{name}/{alueId}/{id}(alueId=${alue.id}, name=${alue.nimi}, id=${viestiketju.id}, sivu=${sivunumero - 1})}">prev</a>
                 <span th:text="${sivunumero}">1</span>
-                <a th:href="@{~/{name}/{alueId}/{id}/{sivunumero}/next(alueId=${alue.id}, name=${alue.nimi}, id=${viestiketju.id}, sivunumero=${sivunumero})}">next</a>
+                <a th:if="${sivunumero * 10 lt viestiketju.vastaukset.size}" th:href="@{~/{name}/{alueId}/{id}(alueId=${alue.id}, name=${alue.nimi}, id=${viestiketju.id}, sivu=${sivunumero + 1})}">next</a>
             </p>
         </div>
 

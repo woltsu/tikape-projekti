@@ -54,8 +54,11 @@ public class AlueDao implements Dao<Alue, Integer> {
         int id = rs.getInt("id");
         String nimi = rs.getString("nimi");
         String kuvaus = rs.getString("kuvaus");
+        List<Viestiketju> viestiketjut = viestiketjuDao.findAllByAlue(id);
+        List<Vastaus> vastaukset = vastausDao.findAllByAlue(id);
+        Timestamp viimeisinTs = vastaukset.get(0).getAikaleima();
 
-        Alue a = new Alue(id, nimi, kuvaus);
+        Alue a = new Alue(id, nimi, kuvaus, vastaukset.size(), viimeisinTs, viestiketjut);
 
         rs.close();
         stmt.close();
