@@ -13,7 +13,6 @@
        <style type="text/css">
             body {
                 margin: 25px;
-                background-color: gray;
             }
 
             a {
@@ -31,7 +30,7 @@
         <div class="w3-main">
         <div class="w3-col m6 l4 w3-card-4">
         <div class="w3-container w3-blue">
-            <h2>The Foorumi</h2>
+            <h2>Keskustelufoorumi</h2>
         </div>
 
         <div class="w3-card">
@@ -42,7 +41,7 @@
                     <th>Viimeisin viesti</th>
                 </tr>
                 <tr th:each="alue : ${alueet}">
-                    <td><a th:href="@{~/{name}/{id}?sivu=1(id=${alue.id}, name=${alue.nimi})}" th:text="${alue.nimi}">nimi</a></td>
+                    <td><a class="w3-button" th:href="@{~/{name}/{id}?sivu=1(id=${alue.id}, name=${alue.nimi})}" th:text="${alue.nimi}">nimi</a></td>
                     <td><a th:href="@{~/{name}/{id}?sivu=1(id=${alue.id}, name=${alue.nimi})}" th:text="${alue.viestienLkm}">maara</a></td>
                     <td><a th:href="@{~/{name}/{id}?sivu=1(id=${alue.id}, name=${alue.nimi})}" th:text="${alue.viimeisin}">aika</a></td>
                 </tr>
