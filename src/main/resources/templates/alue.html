@@ -6,61 +6,61 @@
         <meta charset="utf-8" />
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-        <style>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css" />
+
+       <style type="text/css">
             body {
-                margin: 25px;
-            }
-            div.viestiketjut table {
-                border-style: none;
-                width: 500px;
+                background-color: gray;
             }
 
-            div.viestiketjut table tr:nth-child(even){
-                background-color: #dddddd;
-            }
-
-            a {
+            a.table {
+                display: block;
                 height: 100%;
                 width: 100%;
                 text-decoration: none;
                 color: black;
             }
 
-            div.viestiketjut table tr.aluerivi:hover:not(.active) {
-                background-color: #bfbfbf;
-                color: white;
-                border-collapse: collapse;
-            }
-
-            a#takaisin {
+            a.table:hover {
+                text-decoration: none;
+                color: black;
             }
         </style>
     </head>
 
-    <body>
-        <a id="takaisin" th:href="@{~/}" style="margin: 1% 0% 0% 1%">Etusivulle</a>
-        <h1>Tervetuloa keskustelualueelle <span th:text="${alue.nimi}">nimi</span></h1>
+    <body>        
+        <div class="w3-bar w3-black">
+            <a class="w3-bar-item w3-button w3-mobile" id="takaisin" th:href="@{~/}">Etusivulle</a>
+        </div>
+        <div class="w3-main" style="background-color: white">
+        <div class="w3-col m6 l4 w3-card-4 w3-margin" style="background-color: white">
+
+        <div class="w3-container w3-blue">
+            <h2>Tervetuloa keskustelualueelle <span th:text="${alue.nimi}">nimi</span></h2>
+        </div>
         <div class='viestiketjut'>
-            <table>
+            <table class="w3-table-all w3-hoverable">
                 <tr>
                     <th>Viestiketju</th>
                     <th>Viestej&auml;</th>
                     <th>Viimeisin viesti</th>
                 </tr>
                 <tr th:each="viestiketju: ${viestiketjut}">
-                    <td><a th:href="@{~/{alue}/{alueid}/{id}(id=${viestiketju.id}, alue=${alue.nimi}, alueid=${viestiketju.alueId}, sivu=1)}" th:text="${viestiketju.otsikko}">nimi</a></td>
+                    <td><a class="table" th:href="@{~/{alue}/{alueid}/{id}(id=${viestiketju.id}, alue=${alue.nimi}, alueid=${viestiketju.alueId}, sivu=1)}" th:text="${viestiketju.otsikko}">nimi</a></td>
                     <td th:text="${viestiketju.vastaukset.size}"></td>
                     <td th:text="${viestiketju.uusinAikaleima != null} ? ${viestiketju.uusinAikaleima} : 'ei viestej&auml;'"></td>
                 </tr>
             </table>
 
-            <div>
-                <a th:if="${sivunumero gt 1}" th:href="@{~/{name}/{alueId}(alueId=${alue.id}, name=${alue.nimi}, sivu=${sivunumero - 1})}">prev</a>
-                <span th:text="${sivunumero}">sivun numero</span>
-                <a th:if="${sivunumero * 10 lt alue.viestiketjut.size}" th:href="@{~/{name}/{alueId}(alueId=${alue.id}, name=${alue.nimi}, sivu=${sivunumero + 1})}">next</a>
+            <div class="w3-center" style="background-color: white">
+                <a class="w3-button" th:if="${sivunumero gt 1}" th:href="@{~/{name}/{alueId}(alueId=${alue.id}, name=${alue.nimi}, sivu=${sivunumero - 1})}">prev</a>
+                <span class="w3-badge" th:text="${sivunumero}">sivun numero</span>
+                <a class="w3-button" th:if="${sivunumero * 10 lt alue.viestiketjut.size}" th:href="@{~/{name}/{alueId}(alueId=${alue.id}, name=${alue.nimi}, sivu=${sivunumero + 1})}">next</a>
             </div>
 
-            <div>
+            <div class="w3-margin" style="background-color: white">
                 <br/>
                 Lis&auml;&auml; aihe
                 <form method="POST" th:action="@{~/{nimi}/{id}(nimi=${alue.nimi}, id=${alue.id})}">
@@ -69,7 +69,7 @@
                                oninput="setCustomValidity('')"/>
                     </div>
 
-                    <div>
+                    <div class="w3-margin w3">
                         <button type="submit" class="btn btn-primary" style="">
                             <i class="fa fa-paper-plane fa-lg" aria-hidden="true"></i>
                         </button>
@@ -78,5 +78,7 @@
                 </form>
             </div>
         </div>
+    </div>
+</div>
     </body>
 </html>

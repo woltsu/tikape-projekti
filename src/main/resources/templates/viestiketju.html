@@ -6,81 +6,72 @@
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
         <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css" />
+
 
         <style>
             body {
-                margin: 25px;
-            }
-            .vastaus {
-                border: solid 1px #2f2f2f;
-                outline: none;
-                margin: 0% 60% 1% 3%;
-                padding: 1% 1% 1% 1%;
-            }
-            .otsikko {
-                margin: 2% 0% 3% 3%;
-            }
-            .viestiLaatikko {
-                margin: 0% 0% 1% 3%;
-            }
-
-            .seuraava {
-                margin: 2% 0% 2% 3%;
-            }
-            
-            .linkki {
-                margin: 1% 0% 0% 1%;
+                background-color: gray;
             }
         </style>
 
     </head>
 
     <body>
-        <p>
-            <a th:href="@{~/}" class="linkki">Etusivulle</a>
-            <a th:href="@{~/{name}/{alueId}?sivu=1(alueId=${alue.id}, name=${alue.nimi})}" class="linkki">Takaisin</a>
-        </p>
-        <div>
+        <div class="w3-bar w3-black">
+            <a class="w3-bar-item w3-button w3-mobile" th:href="@{~/}">Etusivulle</a>
+            <a class="w3-bar-item w3-button w3-mobile" th:href="@{~/{name}/{alueId}?sivu=1(alueId=${alue.id}, name=${alue.nimi})}">Takaisin</a>
+        </div>
+        <div class="w3-main">
+        <div class="w3-col m6 l4 w3-margin">
+        <div class="w3-container w3-blue w3-margin w3-card-4">
             <h1 class="otsikko"><span th:text="${viestiketju.otsikko}">viestiketjun nimi</span></h1>
         </div>
 
-        <div class="vastaus" th:each="vastaus : ${vastaukset}">
-            <span>
+        <div class="w3-card-4 w3-margin" style="background-color: white" th:each="vastaus : ${vastaukset}">
+            <div class="w3-container"><p> <span>
                 <b>
                     <span th:text="${vastaus.lahettaja}">nimimerkki</span>
                 </b>
             </span>
             <br/>
-            <span th:text="${vastaus.sisalto}">sisalto</span>
+            <p th:text="${vastaus.sisalto}">sisalto</p>
             <br/>
             <span th:text="${vastaus.aikaleima}">aikaleima</span>
+        </p>
+        </div>
         </div>
 
-        <div class="viestiLaatikko">
+        <div>
+            <div class="w3-margin">
             <form method="POST" th:action="@{~/{name}/{alueId}/{id}(name=${alue.nimi}, alueId=${alue.id}, id=${viestiketju.id}, sivu=${sivunumero})}">
                 <div>
-                    <input type="text" name="nimi" placeholder="Nimimerkki" required="" oninvalid="this.setCustomValidity('Lisää nimimerkki')"
+                    <input class="w3-input w3-hover" type="text" name="nimi" placeholder="Nimimerkki" required="" oninvalid="this.setCustomValidity('Lisää nimimerkki')"
                            oninput="setCustomValidity('')"/>
                 </div>
                 <div>
-                    <textarea style="resize: none" name="viesti" cols="40" rows="5" placeholder="Viesti" required="" oninvalid="this.setCustomValidity('Lisää viesti')"
+                    <textarea class="w3-input w3-hover" style="resize: none" name="viesti" cols="40" rows="5" placeholder="Viesti" required="" oninvalid="this.setCustomValidity('Lisää viesti')"
                               oninput="setCustomValidity('')"></textarea>
                 </div>
                 <div>
-                    <button type="submit" class="btn btn-primary" style="">
+                    <button type="submit" class="btn btn-primary w3-margin" style="">
                         <i class="fa fa-paper-plane fa-lg" aria-hidden="true"></i>
                     </button>
                 </div>
             </form>
         </div>
-
-        <div class="seuraava">
-            <p>
-                <a th:if="${sivunumero gt 1}" th:href="@{~/{name}/{alueId}/{id}(alueId=${alue.id}, name=${alue.nimi}, id=${viestiketju.id}, sivu=${sivunumero - 1})}">prev</a>
-                <span th:text="${sivunumero}">1</span>
-                <a th:if="${sivunumero * 10 lt viestiketju.vastaukset.size}" th:href="@{~/{name}/{alueId}/{id}(alueId=${alue.id}, name=${alue.nimi}, id=${viestiketju.id}, sivu=${sivunumero + 1})}">next</a>
-            </p>
         </div>
 
+        <div class="seuraava w3-center">
+            <p>
+                <a class="w3-button" th:if="${sivunumero gt 1}" th:href="@{~/{name}/{alueId}/{id}(alueId=${alue.id}, name=${alue.nimi}, id=${viestiketju.id}, sivu=${sivunumero - 1})}">prev</a>
+                <span class="w3-badge" th:text="${sivunumero}">1</span>
+                <a class="w3-button" th:if="${sivunumero * 10 lt viestiketju.vastaukset.size}" th:href="@{~/{name}/{alueId}/{id}(alueId=${alue.id}, name=${alue.nimi}, id=${viestiketju.id}, sivu=${sivunumero + 1})}">next</a>
+            </p>
+        </div>
+    </div>
+</div>
     </body>
 </html>
