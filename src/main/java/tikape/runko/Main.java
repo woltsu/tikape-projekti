@@ -12,6 +12,8 @@ import tikape.runko.domain.*;
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        System.setProperty("user.timezone", "Europe/Helsinki");
+        
         // asetetaan portti jos heroku antaa PORT-ympäristömuuttujan
         if (System.getenv("PORT") != null) {
             port(Integer.valueOf(System.getenv("PORT")));
